@@ -1,0 +1,172 @@
+### baseline (before any changes)
+2025-09-28 16:03:41,015 - INFO - ========== Unigram only ==========
+2025-09-28 16:03:46,576 - INFO - Best estimator:Pipeline(steps=[('vect', CountVectorizer(max_features=1000)),('clf', MultinomialNB())])
+2025-09-28 16:03:46,577 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 1000}
+2025-09-28 16:03:46,577 - INFO - Best score (mean CV F1): 0.8571
+2025-09-28 16:03:46,577 - INFO - All grid scores:
+2025-09-28 16:03:46,577 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 500} -> mean F1: 0.8342 (std: 0.0319)
+2025-09-28 16:03:46,577 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 1000} -> mean F1: 0.8411 (std: 0.0294)
+2025-09-28 16:03:46,577 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 2000} -> mean F1: 0.8315 (std: 0.0377)
+2025-09-28 16:03:46,577 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 500} -> mean F1: 0.8306 (std: 0.0270)
+2025-09-28 16:03:46,578 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 1000} -> mean F1: 0.8536 (std: 0.0277)
+2025-09-28 16:03:46,578 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 2000} -> mean F1: 0.8431 (std: 0.0298)
+2025-09-28 16:03:46,578 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 500} -> mean F1: 0.8323 (std: 0.0271)
+2025-09-28 16:03:46,578 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 1000} -> mean F1: 0.8571 (std: 0.0288)
+2025-09-28 16:03:46,578 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 2000} -> mean F1: 0.8374 (std: 0.0247)
+2025-09-28 16:03:46,675 - INFO - Test set results (fold 5):
+2025-09-28 16:03:46,686 - INFO - 
+              precision    recall  f1-score   support
+
+           0     0.8537    0.8750    0.8642        80
+           1     0.8718    0.8500    0.8608        80
+
+    accuracy                         0.8625       160
+   macro avg     0.8627    0.8625    0.8625       160
+weighted avg     0.8627    0.8625    0.8625       160
+
+2025-09-28 16:03:46,688 - INFO - Top 5 fake-indicative words: ['relax' 'originally' 'luxury' 'settled' 'smell']
+2025-09-28 16:03:46,688 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'stated']
+2025-09-28 16:03:46,688 - INFO - ========== Unigram + Bigram ==========
+2025-09-28 16:03:50,357 - INFO - Best estimator:Pipeline(steps=[('vect',
+                 CountVectorizer(max_features=1000, ngram_range=(1, 2))),
+                ('clf', MultinomialNB())])
+2025-09-28 16:03:50,357 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 1000}
+2025-09-28 16:03:50,358 - INFO - Best score (mean CV F1): 0.8726
+2025-09-28 16:03:50,358 - INFO - All grid scores:
+2025-09-28 16:03:50,358 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 500} -> mean F1: 0.8387 (std: 0.0309)
+2025-09-28 16:03:50,358 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 1000} -> mean F1: 0.8640 (std: 0.0339)
+2025-09-28 16:03:50,358 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 2000} -> mean F1: 0.8514 (std: 0.0415)
+2025-09-28 16:03:50,358 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 500} -> mean F1: 0.8414 (std: 0.0318)
+2025-09-28 16:03:50,358 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 1000} -> mean F1: 0.8691 (std: 0.0397)
+2025-09-28 16:03:50,358 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 2000} -> mean F1: 0.8591 (std: 0.0347)
+2025-09-28 16:03:50,358 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 500} -> mean F1: 0.8463 (std: 0.0294)
+2025-09-28 16:03:50,358 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 1000} -> mean F1: 0.8726 (std: 0.0363)
+2025-09-28 16:03:50,359 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 2000} -> mean F1: 0.8651 (std: 0.0347)
+2025-09-28 16:03:50,640 - INFO - Test set results (fold 5):
+2025-09-28 16:03:50,664 - INFO -               precision    recall  f1-score   support
+
+           0     0.8132    0.9250    0.8655        80
+           1     0.9130    0.7875    0.8456        80
+
+    accuracy                         0.8562       160
+   macro avg     0.8631    0.8562    0.8556       160
+weighted avg     0.8631    0.8562    0.8556       160
+
+2025-09-28 16:03:50,667 - INFO - Top 5 fake-indicative words: ['chicago millennium' 'sheraton chicago' 'hotel towers'
+ 'millennium knickerbocker' 'luxury hotel']
+2025-09-28 16:03:50,667 - INFO - Top 5 genuine-indicative words: ['priceline' '25' 'sofa' 'fridge' 'booked hotel']
+2025-09-28 16:03:50,668 - INFO - === End this run ===
+
+
+
+
+
+
+# 新增停用詞：unwanted = {"...", "'s", "``", "'re", "n't", "''", "i.e."}
+
+2025-10-01 19:29:44,396 - INFO - ========== Unigram only ==========
+2025-10-01 19:29:48,864 - INFO - Best estimator:Pipeline(steps=[('vect', CountVectorizer(max_features=1000)),
+                ('clf', MultinomialNB())])
+2025-10-01 19:29:48,865 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 1000}
+2025-10-01 19:29:48,865 - INFO - Best score (mean CV F1): 0.8558
+2025-10-01 19:29:48,865 - INFO - All grid scores:
+2025-10-01 19:29:48,866 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 500} -> mean F1: 0.8336 (std: 0.0298)
+2025-10-01 19:29:48,866 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 1000} -> mean F1: 0.8432 (std: 0.0279)
+2025-10-01 19:29:48,866 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 2000} -> mean F1: 0.8363 (std: 0.0385)
+2025-10-01 19:29:48,866 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 500} -> mean F1: 0.8324 (std: 0.0293)
+2025-10-01 19:29:48,866 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 1000} -> mean F1: 0.8540 (std: 0.0235)
+2025-10-01 19:29:48,866 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 2000} -> mean F1: 0.8448 (std: 0.0279)
+2025-10-01 19:29:48,866 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 500} -> mean F1: 0.8336 (std: 0.0298)
+2025-10-01 19:29:48,867 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 1000} -> mean F1: 0.8558 (std: 0.0223)
+2025-10-01 19:29:48,867 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 2000} -> mean F1: 0.8362 (std: 0.0221)
+2025-10-01 19:29:48,935 - INFO - Test set results (fold 5):
+2025-10-01 19:29:48,943 - INFO -               precision    recall  f1-score   support
+
+           0     0.8537    0.8750    0.8642        80
+           1     0.8718    0.8500    0.8608        80
+
+    accuracy                         0.8625       160
+   macro avg     0.8627    0.8625    0.8625       160
+weighted avg     0.8627    0.8625    0.8625       160
+
+2025-10-01 19:29:48,943 - INFO - Top 5 fake-indicative words: ['relax' 'originally' 'luxury' 'settled' 'smell']
+2025-10-01 19:29:48,944 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'stated']
+2025-10-01 19:29:48,944 - INFO - ========== Unigram + Bigram ==========
+2025-10-01 19:29:51,656 - INFO - Best estimator:Pipeline(steps=[('vect',
+                 CountVectorizer(max_features=1000, ngram_range=(1, 2))),
+                ('clf', MultinomialNB())])
+2025-10-01 19:29:51,656 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 1000}
+2025-10-01 19:29:51,656 - INFO - Best score (mean CV F1): 0.8729
+2025-10-01 19:29:51,656 - INFO - All grid scores:
+2025-10-01 19:29:51,656 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 500} -> mean F1: 0.8506 (std: 0.0302)
+2025-10-01 19:29:51,656 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 1000} -> mean F1: 0.8688 (std: 0.0478)
+2025-10-01 19:29:51,657 - INFO -   {'clf__alpha': 0.1, 'vect__max_features': 2000} -> mean F1: 0.8454 (std: 0.0332)
+2025-10-01 19:29:51,657 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 500} -> mean F1: 0.8501 (std: 0.0308)
+2025-10-01 19:29:51,657 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 1000} -> mean F1: 0.8712 (std: 0.0451)
+2025-10-01 19:29:51,657 - INFO -   {'clf__alpha': 0.5, 'vect__max_features': 2000} -> mean F1: 0.8562 (std: 0.0399)
+2025-10-01 19:29:51,657 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 500} -> mean F1: 0.8496 (std: 0.0312)
+2025-10-01 19:29:51,657 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 1000} -> mean F1: 0.8729 (std: 0.0432)
+2025-10-01 19:29:51,657 - INFO -   {'clf__alpha': 1.0, 'vect__max_features': 2000} -> mean F1: 0.8604 (std: 0.0356)
+2025-10-01 19:29:51,860 - INFO - Test set results (fold 5):
+2025-10-01 19:29:51,867 - INFO -               precision    recall  f1-score   support
+
+           0     0.8182    0.9000    0.8571        80
+           1     0.8889    0.8000    0.8421        80
+
+    accuracy                         0.8500       160
+   macro avg     0.8535    0.8500    0.8496       160
+weighted avg     0.8535    0.8500    0.8496       160
+
+2025-10-01 19:29:51,868 - INFO - Top 5 fake-indicative words: ['chicago millennium' 'sheraton chicago' 'hotel towers' 'luxury hotel'
+ 'millennium knickerbocker']
+2025-10-01 19:29:51,868 - INFO - Top 5 genuine-indicative words: ['priceline' '25' 'sofa' 'booked hotel' 'fridge']
+2025-10-01 19:29:51,869 - INFO - === End this run ===
+
+
+
+
+
+
+### preprocess新增詞形還原 (lemmatization) (WordNetLemmatizer)2025-10-01 21:23:40,058 - INFO - ========== Unigram only ==========
+2025-10-01 21:23:48,045 - INFO - Best estimator:Pipeline(steps=[('vect', CountVectorizer(max_features=2000)),
+                ('clf', MultinomialNB(alpha=0.5))])
+2025-10-01 21:23:48,046 - INFO - Best params: {'clf__alpha': 0.5, 'vect__max_features': 2000}
+2025-10-01 21:23:48,046 - INFO - Best score (mean CV F1): 0.8515
+2025-10-01 21:23:48,117 - INFO - Test set results (fold 5):
+2025-10-01 21:23:48,126 - INFO -               precision    recall  f1-score   support
+
+           0     0.8846    0.8625    0.8734        80
+           1     0.8659    0.8875    0.8765        80
+
+    accuracy                         0.8750       160
+   macro avg     0.8752    0.8750    0.8750       160
+weighted avg     0.8752    0.8750    0.8750       160
+
+2025-10-01 21:23:48,127 - INFO - Top 5 fake-indicative words: ['relax' 'originally' 'settled' 'egg' 'luxury']
+2025-10-01 21:23:48,128 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'stated']
+2025-10-01 21:23:48,128 - INFO - ========== Unigram + Bigram ==========
+2025-10-01 21:23:51,386 - INFO - Best estimator:Pipeline(steps=[('vect',
+                 CountVectorizer(max_features=2000, ngram_range=(1, 2))),
+                ('clf', MultinomialNB())])
+2025-10-01 21:23:51,386 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 2000}
+2025-10-01 21:23:51,386 - INFO - Best score (mean CV F1): 0.8677
+2025-10-01 21:23:51,603 - INFO - Test set results (fold 5):
+2025-10-01 21:23:51,611 - INFO -               precision    recall  f1-score   support
+
+           0     0.8523    0.9375    0.8929        80
+           1     0.9306    0.8375    0.8816        80
+
+    accuracy                         0.8875       160
+   macro avg     0.8914    0.8875    0.8872       160
+weighted avg     0.8914    0.8875    0.8872       160
+
+2025-10-01 21:23:51,612 - INFO - Top 5 fake-indicative words: ['chicago millennium' 'sheraton chicago' 'hotel tower'
+ 'millennium knickerbocker' 'relax']
+2025-10-01 21:23:51,613 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'booked hotel']
+2025-10-01 21:23:51,613 - INFO - === End this run ===
+
+
+
+
+
+
