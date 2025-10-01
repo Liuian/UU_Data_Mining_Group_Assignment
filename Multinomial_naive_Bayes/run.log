@@ -62,7 +62,7 @@ weighted avg     0.8631    0.8562    0.8556       160
 
 
 
-# 新增停用詞：unwanted = {"...", "'s", "``", "'re", "n't", "''", "i.e."}
+# preprocess: remove unwanted tokens. example: 's, n't, etc.
 
 2025-10-01 19:29:44,396 - INFO - ========== Unigram only ==========
 2025-10-01 19:29:48,864 - INFO - Best estimator:Pipeline(steps=[('vect', CountVectorizer(max_features=1000)),
@@ -127,7 +127,8 @@ weighted avg     0.8535    0.8500    0.8496       160
 
 
 
-### preprocess新增詞形還原 (lemmatization) (WordNetLemmatizer)2025-10-01 21:23:40,058 - INFO - ========== Unigram only ==========
+### preprocess: lemmatization
+2025-10-01 21:23:40,058 - INFO - ========== Unigram only ==========
 2025-10-01 21:23:48,045 - INFO - Best estimator:Pipeline(steps=[('vect', CountVectorizer(max_features=2000)),
                 ('clf', MultinomialNB(alpha=0.5))])
 2025-10-01 21:23:48,046 - INFO - Best params: {'clf__alpha': 0.5, 'vect__max_features': 2000}
@@ -164,6 +165,94 @@ weighted avg     0.8914    0.8875    0.8872       160
  'millennium knickerbocker' 'relax']
 2025-10-01 21:23:51,613 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'booked hotel']
 2025-10-01 21:23:51,613 - INFO - === End this run ===
+
+
+
+
+
+
+### Expand the hyperparameter grid for alpha and max_features.
+2025-10-01 21:34:06,278 - INFO - ========== Unigram only ==========
+2025-10-01 21:34:14,433 - INFO - Best estimator:Pipeline(steps=[('vect', CountVectorizer(max_features=3000)),
+                ('clf', MultinomialNB())])
+2025-10-01 21:34:14,434 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 3000}
+2025-10-01 21:34:14,434 - INFO - Best score (mean CV F1): 0.8601
+2025-10-01 21:34:14,499 - INFO - Test set results (fold 5):
+2025-10-01 21:34:14,508 - INFO -               precision    recall  f1-score   support
+
+           0     0.8875    0.8875    0.8875        80
+           1     0.8875    0.8875    0.8875        80
+
+    accuracy                         0.8875       160
+   macro avg     0.8875    0.8875    0.8875       160
+weighted avg     0.8875    0.8875    0.8875       160
+
+2025-10-01 21:34:14,511 - INFO - Top 5 fake-indicative words: ['relax' 'originally' 'luxury' 'settled' 'egg']
+2025-10-01 21:34:14,511 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'stated']
+2025-10-01 21:34:14,512 - INFO - ========== Unigram + Bigram ==========
+2025-10-01 21:34:19,167 - INFO - Best estimator:Pipeline(steps=[('vect',
+                 CountVectorizer(max_features=3000, ngram_range=(1, 2))),
+                ('clf', MultinomialNB(alpha=0.5))])
+2025-10-01 21:34:19,167 - INFO - Best params: {'clf__alpha': 0.5, 'vect__max_features': 3000}
+2025-10-01 21:34:19,167 - INFO - Best score (mean CV F1): 0.8724
+2025-10-01 21:34:19,408 - INFO - Test set results (fold 5):
+2025-10-01 21:34:19,417 - INFO -               precision    recall  f1-score   support
+
+           0     0.8427    0.9375    0.8876        80
+           1     0.9296    0.8250    0.8742        80
+
+    accuracy                         0.8812       160
+   macro avg     0.8861    0.8812    0.8809       160
+weighted avg     0.8861    0.8812    0.8809       160
+
+2025-10-01 21:34:19,420 - INFO - Top 5 fake-indicative words: ['chicago millennium' 'sheraton chicago' 'hotel tower'
+ 'millennium knickerbocker' 'relax']
+2025-10-01 21:34:19,420 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'booked hotel' 'fridge']
+2025-10-01 21:34:19,421 - INFO - === End this run ===
+
+
+
+
+
+
+### Expand the hyperparameter grid for alpha and max_features.
+2025-10-01 21:36:52,132 - INFO - ========== Unigram only ==========
+2025-10-01 21:37:02,344 - INFO - Best estimator:Pipeline(steps=[('vect', CountVectorizer(max_features=3000)),
+                ('clf', MultinomialNB())])
+2025-10-01 21:37:02,344 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 3000}
+2025-10-01 21:37:02,344 - INFO - Best score (mean CV F1): 0.8601
+2025-10-01 21:37:02,583 - INFO - Test set results (fold 5):
+2025-10-01 21:37:02,621 - INFO -               precision    recall  f1-score   support
+
+           0     0.8875    0.8875    0.8875        80
+           1     0.8875    0.8875    0.8875        80
+
+    accuracy                         0.8875       160
+   macro avg     0.8875    0.8875    0.8875       160
+weighted avg     0.8875    0.8875    0.8875       160
+
+2025-10-01 21:37:02,626 - INFO - Top 5 fake-indicative words: ['relax' 'originally' 'luxury' 'settled' 'egg']
+2025-10-01 21:37:02,627 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'stated']
+2025-10-01 21:37:02,628 - INFO - ========== Unigram + Bigram ==========
+2025-10-01 21:37:10,752 - INFO - Best estimator:Pipeline(steps=[('vect',
+                 CountVectorizer(max_features=3000, ngram_range=(1, 2))),
+                ('clf', MultinomialNB(alpha=0.5))])
+2025-10-01 21:37:10,752 - INFO - Best params: {'clf__alpha': 0.5, 'vect__max_features': 3000}
+2025-10-01 21:37:10,752 - INFO - Best score (mean CV F1): 0.8724
+2025-10-01 21:37:10,991 - INFO - Test set results (fold 5):
+2025-10-01 21:37:11,003 - INFO -               precision    recall  f1-score   support
+
+           0     0.8427    0.9375    0.8876        80
+           1     0.9296    0.8250    0.8742        80
+
+    accuracy                         0.8812       160
+   macro avg     0.8861    0.8812    0.8809       160
+weighted avg     0.8861    0.8812    0.8809       160
+
+2025-10-01 21:37:11,005 - INFO - Top 5 fake-indicative words: ['chicago millennium' 'sheraton chicago' 'hotel tower'
+ 'millennium knickerbocker' 'relax']
+2025-10-01 21:37:11,005 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'booked hotel' 'fridge']
+2025-10-01 21:37:11,006 - INFO - === End this run ===
 
 
 

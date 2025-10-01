@@ -86,10 +86,10 @@ def preprocess(text):
 def run_experiment(ngram_range):
     texts, labels, folds = load_data(DATA_DIR)
     # test
-    print(f"texts: {texts[:2]}\n labels: {labels[:2]}\n flods: {folds[:2]}")
+    # print(f"texts: {texts[:2]}\n labels: {labels[:2]}\n flods: {folds[:2]}")
     texts = [preprocess(t) for t in texts]
     # test
-    print(f"Preprocessed texts: {texts[:2]}")
+    # print(f"Preprocessed texts: {texts[:2]}")
     labels = np.array(labels)   # Convert to numpy array
     folds = np.array(folds) # Convert to numpy array
 
@@ -99,8 +99,8 @@ def run_experiment(ngram_range):
     X_test, y_test = [texts[i] for i in test_idx], labels[test_idx]
 
     param_grid = {
-        'vect__max_features': [500, 1000, 2000],    # Limit vocabulary size
-        'clf__alpha': [0.1, 0.5, 1.0]   # Smoothing parameter
+        'vect__max_features': [500, 1000, 2000, 3000, 3500, 4000],    # Limit vocabulary size
+        'clf__alpha': [0.01, 0.05, 0.1, 0.5, 1.0]   # Smoothing parameter
     }
     pipeline = Pipeline([
         ('vect', CountVectorizer(ngram_range=ngram_range)),
