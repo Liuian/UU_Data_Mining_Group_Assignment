@@ -2,7 +2,7 @@ import os
 import logging
 import string
 import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.metrics import classification_report
@@ -12,7 +12,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
 APPEND_LOG = True  # Set to False to disable log file output
-
+N_SPLITS_LIST = [3, 4, 5, 8, 10]  # Try different n_splits
 
 # ---------- Logging setup with two handlers ----------
 logger = logging.getLogger("my_logger")
@@ -69,7 +69,6 @@ def load_data(data_dir):
     return texts, labels, folds
 
 def preprocess(text):
-    #TODO: Add more preprocessing steps
     stop_words = set(stopwords.words('english'))
     lemmatizer = WordNetLemmatizer()
 
@@ -83,7 +82,7 @@ def preprocess(text):
     tokens = [lemmatizer.lemmatize(w) for w in tokens]
     return ' '.join(tokens)
 
-def run_experiment(ngram_range):
+def run_experiment(ngram_range, n_splits_list=[4]):
     texts, labels, folds = load_data(DATA_DIR)
     # test
     # print(f"texts: {texts[:2]}\n labels: {labels[:2]}\n flods: {folds[:2]}")
@@ -102,45 +101,41 @@ def run_experiment(ngram_range):
         'vect__max_features': [500, 1000, 2000, 3000, 3500, 4000],    # Limit vocabulary size
         'clf__alpha': [0.01, 0.05, 0.1, 0.5, 1.0]   # Smoothing parameter
     }
-    pipeline = Pipeline([
-        ('vect', CountVectorizer(ngram_range=ngram_range)),
-        ('clf', MultinomialNB())
-    ])
-    cv = StratifiedKFold(n_splits=4, shuffle=True, random_state=42)
-    grid = GridSearchCV(pipeline, param_grid, cv=cv, scoring='f1', n_jobs=-1)       # n_jobs=-1 to use all available cores
-    
-    grid.fit(X_train, y_train)
-    
-    logger.info(f"Best estimator:{grid.best_estimator_}")
-    logger.info(f"Best params: {grid.best_params_}")
-    logger.info(f"Best score (mean CV F1): {grid.best_score_:.4f}")
-    # logger.info("All grid scores:")
-    # for i, params in enumerate(grid.cv_results_['params']):
-    #     mean_score = grid.cv_results_['mean_test_score'][i]
-    #     std_score = grid.cv_results_['std_test_score'][i]
-    #     logger.info(f"  {params} -> mean F1: {mean_score:.4f} (std: {std_score:.4f})")
-    
-    best_model = grid.best_estimator_
-    best_model.fit(X_train, y_train)
 
-    y_pred = best_model.predict(X_test)
-    logger.info(f"Test set results (fold 5):")
-    logger.info(classification_report(y_test, y_pred, digits=4))
+    for n_splits in n_splits_list:
+        logger.info(f"--- GridSearchCV with StratifiedKFold n_splits={n_splits} ---")
+        pipeline = Pipeline([
+            ('vect', CountVectorizer(ngram_range=ngram_range)),
+            ('clf', MultinomialNB())
+        ])
+        cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
+        grid = GridSearchCV(pipeline, param_grid, cv=cv, scoring='f1', n_jobs=-1)
+        grid.fit(X_train, y_train)
 
-    vect = best_model.named_steps['vect']
-    clf = best_model.named_steps['clf']
-    feature_names = np.array(vect.get_feature_names_out())
-    log_prob = clf.feature_log_prob_
-    top_fake = feature_names[np.argsort(log_prob[1] - log_prob[0])[-5:][::-1]]
-    top_genuine = feature_names[np.argsort(log_prob[0] - log_prob[1])[-5:][::-1]]
-    logger.info(f"Top 5 fake-indicative words: {top_fake}")
-    logger.info(f"Top 5 genuine-indicative words: {top_genuine}")
+        logger.info(f"Best params: {grid.best_params_}")
+        logger.info(f"Best score (mean CV F1): {grid.best_score_:.4f}")
+
+        best_model = grid.best_estimator_
+        best_model.fit(X_train, y_train)
+
+        y_pred = best_model.predict(X_test)
+        logger.info(f"Test set results (fold 5):")
+        logger.info(classification_report(y_test, y_pred, digits=4))
+
+        vect = best_model.named_steps['vect']
+        clf = best_model.named_steps['clf']
+        feature_names = np.array(vect.get_feature_names_out())
+        log_prob = clf.feature_log_prob_
+        top_fake = feature_names[np.argsort(log_prob[1] - log_prob[0])[-5:][::-1]]
+        top_genuine = feature_names[np.argsort(log_prob[0] - log_prob[1])[-5:][::-1]]
+        logger.info(f"Top 5 fake-indicative words: {top_fake}")
+        logger.info(f"Top 5 genuine-indicative words: {top_genuine}")
 
 def main():
     logger.info("========== Unigram only ==========")
-    run_experiment((1,1))
+    run_experiment((1,1), n_splits_list=N_SPLITS_LIST)
     logger.info("========== Unigram + Bigram ==========")
-    run_experiment((1,2))
+    run_experiment((1,2), n_splits_list=N_SPLITS_LIST)
 
 if __name__ == "__main__":
     main()
