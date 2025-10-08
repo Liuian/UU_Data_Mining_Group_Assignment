@@ -1,3 +1,4 @@
+#%%
 import os
 import logging
 import string
@@ -11,9 +12,11 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
+#%%
 APPEND_LOG = True  # Set to False to disable log file output
 N_SPLITS_LIST = [3, 4, 5, 8, 10]  # Try different n_splits
 
+#%%
 # ---------- Logging setup with two handlers ----------
 logger = logging.getLogger("my_logger")
 logger.setLevel(logging.INFO)
@@ -37,7 +40,7 @@ stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 # ---------- End logging setup ----------
 
-
+#%%
 # ---------- NLTK setup ----------
 nltk_data_dir = os.path.join(os.path.dirname(__file__))  # Set NLTK data directory to the same directory as this script
 nltk.data.path.append(nltk_data_dir)  # Add this directory to NLTK data path
@@ -46,12 +49,13 @@ nltk.download('punkt_tab', download_dir=nltk_data_dir)
 nltk.download('wordnet', download_dir=nltk_data_dir)
 # ---------- End NLTK setup ----------
 
-
+#%%
 # Set data directory relative to this script
 DATA_DIR = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '../data/negative_polarity')
 )
 
+#%%
 def load_data(data_dir):
     # Load all reviews, labels, and fold numbers
     texts, labels, folds = [], [], []
@@ -137,8 +141,7 @@ def main():
     logger.info("========== Unigram + Bigram ==========")
     run_experiment((1,2), n_splits_list=N_SPLITS_LIST)
 
+#%%
 if __name__ == "__main__":
     main()
     logger.info("=== End this run ===\n" + ("\n" * 5))
-
-
