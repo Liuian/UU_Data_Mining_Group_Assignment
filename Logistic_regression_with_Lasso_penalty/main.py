@@ -11,6 +11,9 @@ from sklearn.pipeline import Pipeline
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
 
 #%%
 APPEND_LOG = True
@@ -73,6 +76,18 @@ def preprocess(text):
     tokens = [lemmatizer.lemmatize(w) for w in tokens]
     return ' '.join(tokens)
 
+def plot_confusion(y_true, y_pred, title, save_path=None):
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(4,4))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=['genuine', 'fake'], yticklabels=['genuine', 'fake'])
+    plt.xlabel('Predicted')
+    plt.ylabel('True')
+    plt.title(title)
+    plt.tight_layout()
+    if save_path:
+        plt.savefig(save_path)
+    plt.show()
+
 def run_experiment(ngram_range, n_splits_list=[4], use_tfidf=False):
     texts, labels, folds = load_data(DATA_DIR)
     texts = [preprocess(t) for t in texts]
@@ -109,6 +124,12 @@ def run_experiment(ngram_range, n_splits_list=[4], use_tfidf=False):
         y_pred = best_model.predict(X_test)
         logger.info(f"Test set results (fold 5):")
         logger.info(classification_report(y_test, y_pred, digits=4))
+
+        # --- Visualization: Confusion Matrix ---
+        plot_title = f"Confusion Matrix (n_splits={n_splits}, {'TFIDF' if use_tfidf else 'Count'}, ngram={ngram_range})"
+        save_path = f"confmat_{'tfidf' if use_tfidf else 'count'}_{ngram_range[0]}_{ngram_range[1]}_{n_splits}.png"
+        plot_confusion(y_test, y_pred, plot_title, save_path=save_path)
+        # --- End Visualization: Confusion Matrix ---
 
         vect = best_model.named_steps['vect']
         clf = best_model.named_steps['clf']
