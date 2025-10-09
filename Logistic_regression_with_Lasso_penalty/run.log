@@ -539,3 +539,155 @@ weighted avg     0.8212    0.8187    0.8184       160
 2025-10-09 11:48:00,217 - INFO - Top 5 genuine-indicative words: ['star' 'adult' 'elevator' 'returned' 'walk']
 2025-10-09 11:48:00,218 - INFO - ========== Unigram + Bigram (TFIDF) ==========
 2025-10-09 11:48:02,187 - INFO - --- GridSearchCV with StratifiedKFold n_splits=3 ---
+2025-10-09 11:48:07,768 - INFO - Best params: {'clf__C': 10, 'vect__max_features': 2000}
+2025-10-09 11:48:07,769 - INFO - Best score (mean CV F1): 0.8211
+2025-10-09 11:48:08,048 - INFO - Test set results (fold 5):
+2025-10-09 11:48:08,059 - INFO -               precision    recall  f1-score   support
+
+           0     0.8072    0.8375    0.8221        80
+           1     0.8312    0.8000    0.8153        80
+
+    accuracy                         0.8187       160
+   macro avg     0.8192    0.8188    0.8187       160
+weighted avg     0.8192    0.8187    0.8187       160
+
+2025-10-09 11:48:08,322 - INFO - Top 5 fake-indicative words: ['chicago' 'relax' 'hotel chicago' 'homewood suite' 'turned']
+2025-10-09 11:48:08,323 - INFO - Top 5 genuine-indicative words: ['booked hotel' 'adult' 'star' 'elevator' 'location']
+2025-10-09 11:48:08,324 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-09 11:48:15,295 - INFO - Best params: {'clf__C': 10, 'vect__max_features': 2000}
+2025-10-09 11:48:15,296 - INFO - Best score (mean CV F1): 0.8213
+2025-10-09 11:48:15,588 - INFO - Test set results (fold 5):
+2025-10-09 11:48:15,597 - INFO -               precision    recall  f1-score   support
+
+           0     0.8072    0.8375    0.8221        80
+           1     0.8312    0.8000    0.8153        80
+
+    accuracy                         0.8187       160
+   macro avg     0.8192    0.8188    0.8187       160
+weighted avg     0.8192    0.8187    0.8187       160
+
+2025-10-09 11:48:15,887 - INFO - Top 5 fake-indicative words: ['chicago' 'relax' 'hotel chicago' 'homewood suite' 'turned']
+2025-10-09 11:48:15,888 - INFO - Top 5 genuine-indicative words: ['booked hotel' 'adult' 'star' 'elevator' 'location']
+2025-10-09 11:48:15,889 - INFO - --- GridSearchCV with StratifiedKFold n_splits=5 ---
+2025-10-09 11:48:24,889 - INFO - Best params: {'clf__C': 10, 'vect__max_features': 2000}
+2025-10-09 11:48:24,890 - INFO - Best score (mean CV F1): 0.8253
+2025-10-09 11:48:25,156 - INFO - Test set results (fold 5):
+2025-10-09 11:48:25,166 - INFO -               precision    recall  f1-score   support
+
+           0     0.8072    0.8375    0.8221        80
+           1     0.8312    0.8000    0.8153        80
+
+    accuracy                         0.8187       160
+   macro avg     0.8192    0.8188    0.8187       160
+weighted avg     0.8192    0.8187    0.8187       160
+
+2025-10-09 11:48:25,428 - INFO - Top 5 fake-indicative words: ['chicago' 'relax' 'hotel chicago' 'homewood suite' 'turned']
+2025-10-09 11:48:25,429 - INFO - Top 5 genuine-indicative words: ['booked hotel' 'adult' 'star' 'elevator' 'location']
+2025-10-09 11:48:25,431 - INFO - --- GridSearchCV with StratifiedKFold n_splits=8 ---
+2025-10-09 11:48:37,723 - INFO - Best params: {'clf__C': 10, 'vect__max_features': 2000}
+2025-10-09 11:48:37,724 - INFO - Best score (mean CV F1): 0.8362
+2025-10-09 11:48:37,979 - INFO - Test set results (fold 5):
+2025-10-09 11:48:37,989 - INFO -               precision    recall  f1-score   support
+
+           0     0.8072    0.8375    0.8221        80
+           1     0.8312    0.8000    0.8153        80
+
+    accuracy                         0.8187       160
+   macro avg     0.8192    0.8188    0.8187       160
+weighted avg     0.8192    0.8187    0.8187       160
+
+2025-10-09 11:48:38,251 - INFO - Top 5 fake-indicative words: ['chicago' 'relax' 'hotel chicago' 'homewood suite' 'turned']
+2025-10-09 11:48:38,252 - INFO - Top 5 genuine-indicative words: ['booked hotel' 'adult' 'star' 'elevator' 'location']
+2025-10-09 11:48:38,252 - INFO - --- GridSearchCV with StratifiedKFold n_splits=10 ---
+2025-10-09 11:48:58,646 - INFO - Best params: {'clf__C': 10, 'vect__max_features': 4000}
+2025-10-09 11:48:58,660 - INFO - Best score (mean CV F1): 0.8372
+2025-10-09 11:48:59,061 - INFO - Test set results (fold 5):
+2025-10-09 11:48:59,072 - INFO -               precision    recall  f1-score   support
+
+           0     0.8171    0.8375    0.8272        80
+           1     0.8333    0.8125    0.8228        80
+
+    accuracy                         0.8250       160
+   macro avg     0.8252    0.8250    0.8250       160
+weighted avg     0.8252    0.8250    0.8250       160
+
+2025-10-09 11:48:59,376 - INFO - Top 5 fake-indicative words: ['chicago' 'relax' 'homewood suite' 'hotel chicago' 'turned']
+2025-10-09 11:48:59,378 - INFO - Top 5 genuine-indicative words: ['booked hotel' 'adult' 'star' 'elevator' 'construction']
+2025-10-09 11:48:59,381 - INFO - === End this run ===
+
+
+
+
+
+
+2025-10-09 11:50:17,447 - INFO - ========== Unigram only (CountVectorizer) ==========
+2025-10-09 11:50:19,280 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-09 11:50:21,547 - INFO - Best params: {'clf__C': 1, 'vect__max_features': 1000}
+2025-10-09 11:50:21,549 - INFO - Best score (mean CV F1): 0.8165
+2025-10-09 11:50:21,636 - INFO - Test set results (fold 5):
+2025-10-09 11:50:21,649 - INFO -               precision    recall  f1-score   support
+
+           0     0.8500    0.8500    0.8500        80
+           1     0.8500    0.8500    0.8500        80
+
+    accuracy                         0.8500       160
+   macro avg     0.8500    0.8500    0.8500       160
+weighted avg     0.8500    0.8500    0.8500       160
+
+2025-10-09 11:50:21,974 - INFO - Top 5 fake-indicative words: ['smelled' 'turned' 'finally' 'millennium' 'chicago']
+2025-10-09 11:50:21,976 - INFO - Top 5 genuine-indicative words: ['star' 'world' 'concierge' 'street' 'elevator']
+2025-10-09 11:50:21,977 - INFO - ========== Unigram + Bigram (CountVectorizer) ==========
+2025-10-09 11:50:23,658 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-09 11:50:29,710 - INFO - Best params: {'clf__C': 1, 'vect__max_features': 2000}
+2025-10-09 11:50:29,711 - INFO - Best score (mean CV F1): 0.8223
+2025-10-09 11:50:29,981 - INFO - Test set results (fold 5):
+2025-10-09 11:50:29,990 - INFO -               precision    recall  f1-score   support
+
+           0     0.8462    0.8250    0.8354        80
+           1     0.8293    0.8500    0.8395        80
+
+    accuracy                         0.8375       160
+   macro avg     0.8377    0.8375    0.8375       160
+weighted avg     0.8377    0.8375    0.8375       160
+
+2025-10-09 11:50:30,240 - INFO - Top 5 fake-indicative words: ['relax' 'smelled' 'hotel chicago' 'finally' 'turned']
+2025-10-09 11:50:30,241 - INFO - Top 5 genuine-indicative words: ['star' 'booked hotel' 'adult' 'elevator' 'street']
+2025-10-09 11:50:30,242 - INFO - ========== Unigram only (TFIDF) ==========
+2025-10-09 11:50:31,847 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-09 11:50:34,814 - INFO - Best params: {'clf__C': 10, 'vect__max_features': 3000}
+2025-10-09 11:50:34,815 - INFO - Best score (mean CV F1): 0.8196
+2025-10-09 11:50:34,966 - INFO - Test set results (fold 5):
+2025-10-09 11:50:34,979 - INFO -               precision    recall  f1-score   support
+
+           0     0.7955    0.8750    0.8333        80
+           1     0.8611    0.7750    0.8158        80
+
+    accuracy                         0.8250       160
+   macro avg     0.8283    0.8250    0.8246       160
+weighted avg     0.8283    0.8250    0.8246       160
+
+2025-10-09 11:50:35,411 - INFO - Top 5 fake-indicative words: ['chicago' 'recently' 'smelled' 'millennium' 'turned']
+2025-10-09 11:50:35,412 - INFO - Top 5 genuine-indicative words: ['star' 'adult' 'elevator' 'returned' 'walk']
+2025-10-09 11:50:35,413 - INFO - ========== Unigram + Bigram (TFIDF) ==========
+2025-10-09 11:50:37,001 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-09 11:50:43,930 - INFO - Best params: {'clf__C': 10, 'vect__max_features': 2000}
+2025-10-09 11:50:43,930 - INFO - Best score (mean CV F1): 0.8213
+2025-10-09 11:50:44,262 - INFO - Test set results (fold 5):
+2025-10-09 11:50:44,271 - INFO -               precision    recall  f1-score   support
+
+           0     0.8072    0.8375    0.8221        80
+           1     0.8312    0.8000    0.8153        80
+
+    accuracy                         0.8187       160
+   macro avg     0.8192    0.8188    0.8187       160
+weighted avg     0.8192    0.8187    0.8187       160
+
+2025-10-09 11:50:44,562 - INFO - Top 5 fake-indicative words: ['chicago' 'relax' 'hotel chicago' 'homewood suite' 'turned']
+2025-10-09 11:50:44,562 - INFO - Top 5 genuine-indicative words: ['booked hotel' 'adult' 'star' 'elevator' 'location']
+2025-10-09 11:50:44,564 - INFO - === End this run ===
+
+
+
+
+
+

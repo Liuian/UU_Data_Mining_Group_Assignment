@@ -17,7 +17,8 @@ from sklearn.metrics import confusion_matrix
 
 #%%
 APPEND_LOG = True
-N_SPLITS_LIST = [3, 4, 5, 8, 10]
+# N_SPLITS_LIST = [3, 4, 5, 8, 10]
+N_SPLITS_LIST = [4]
 
 #%% Logging setup (same as multinomial NB)
 logger = logging.getLogger("my_logger")
