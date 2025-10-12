@@ -1,0 +1,15 @@
+# Ignore datasets, models, and reports
+data/
+models/
+reports/
+
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+*.pkl
+*.joblib
+*.png
+*.txt
+
+# Ignore Jupyter and temp files
+.ipynb_checkpoints/
