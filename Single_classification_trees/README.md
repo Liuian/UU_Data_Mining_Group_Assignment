@@ -12,7 +12,7 @@ How to Run
 Notes:
 1. Random seeds are fixed, so outputs are reproducible.
 2. models/ and reports/ folders are excluded via .gitignore (they can be regenerated)
-3. The code prints and stores all output in reports/output.txt.
+3. **The code prints and stores all output in reports/output.txt**.
 
 
 
