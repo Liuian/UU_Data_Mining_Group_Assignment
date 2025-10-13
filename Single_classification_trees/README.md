@@ -11,6 +11,20 @@ How to Run
    python main.py --dataset_root "your_path/negative_polarity"    #"your_path/negative_polarity" replace this with your path to negative_polarity dataset
 
 
+Files:
+| File                   | Description                                                                                                                                  |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`main.py`**          | Runs the full pipeline: loads data, trains models, evaluates results, and prints top terms.                                                  |
+| **`preprocessing.py`** | Loads and prepares the dataset, splits folds for training and testing.                                          |
+| **`train_models.py`**  | Defines and trains the **Decision Tree classifier** (unigram and bigram versions) using RandomizedSearchCV with GroupKFold cross-validation. |
+| **`evaluate.py`**      | Evaluates trained models on the test set, computes accuracy, precision, recall, F1-score, and saves confusion matrix plots and reports.      |
+| **`features.py`**      | Extracts and displays the **five most important terms** indicating fake and genuine reviews based on feature importance and correlation.     |
+| **`requirements.txt`** | Lists all Python dependencies required to run the project.                                                                                   |
+| **`README.md`**        | Provides setup instructions, project overview, and usage details.                                                                            |
+| **`.gitignore`**       | Ensures large or unnecessary files (like `data/`, `models/`, `reports/`) are not uploaded to GitHub.                                         |
+
+
+
 Notes:
 1. Random seeds are fixed, so outputs are reproducible.
 2. models/ and reports/ folders are excluded via .gitignore (they can be regenerated)
