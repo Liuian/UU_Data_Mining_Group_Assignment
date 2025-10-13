@@ -3,9 +3,11 @@ A Decision Tree classifier is trained to distinguish between fake and genuine ho
 How to Run
 1. Have Python installed
 2. Download the dataset 
-3. Run 
+3. Run
+   
    python -m pip install -r requirements.txt           #downloads all dependencies
 5. Run
+   
    python main.py --dataset_root "your_path/negative_polarity"    #"your_path/negative_polarity" replace this with your path to negative_polarity dataset
 
 
