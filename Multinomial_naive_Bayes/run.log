@@ -423,3 +423,144 @@ weighted avg     0.8531    0.8438    0.8427       160
 
 
 
+2025-10-13 20:40:59,633 - INFO - ========== Unigram only (CountVectorizer) ==========
+2025-10-13 20:41:04,412 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-13 20:41:04,413 - INFO - Using CountVectorizer
+2025-10-13 20:41:14,527 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 3000}
+2025-10-13 20:41:14,544 - INFO - Best score (mean CV F1): 0.8601
+2025-10-13 20:41:14,640 - INFO - Test set results (fold 5):
+2025-10-13 20:41:14,657 - INFO -               precision    recall  f1-score   support
+
+           0     0.8875    0.8875    0.8875        80
+           1     0.8875    0.8875    0.8875        80
+
+    accuracy                         0.8875       160
+   macro avg     0.8875    0.8875    0.8875       160
+weighted avg     0.8875    0.8875    0.8875       160
+
+2025-10-13 20:41:14,662 - INFO - Top 5 fake-indicative words: ['relax' 'originally' 'luxury' 'settled' 'egg']
+2025-10-13 20:41:14,662 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'stated']
+2025-10-13 20:41:14,665 - INFO - ========== Unigram + Bigram (CountVectorizer) ==========
+2025-10-13 20:41:16,300 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-13 20:41:16,301 - INFO - Using CountVectorizer
+2025-10-13 20:41:21,696 - INFO - Best params: {'clf__alpha': 0.5, 'vect__max_features': 3000}
+2025-10-13 20:41:21,697 - INFO - Best score (mean CV F1): 0.8724
+2025-10-13 20:41:21,944 - INFO - Test set results (fold 5):
+2025-10-13 20:41:21,954 - INFO -               precision    recall  f1-score   support
+
+           0     0.8427    0.9375    0.8876        80
+           1     0.9296    0.8250    0.8742        80
+
+    accuracy                         0.8812       160
+   macro avg     0.8861    0.8812    0.8809       160
+weighted avg     0.8861    0.8812    0.8809       160
+
+2025-10-13 20:41:21,957 - INFO - Top 5 fake-indicative words: ['chicago millennium' 'sheraton chicago' 'hotel tower'
+ 'millennium knickerbocker' 'relax']
+2025-10-13 20:41:21,958 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'booked hotel' 'fridge']
+2025-10-13 20:41:21,959 - INFO - ========== Unigram only (TfidfVectorizer) ==========
+2025-10-13 20:41:23,336 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-13 20:41:23,337 - INFO - Using TfidfVectorizer
+2025-10-13 20:41:25,307 - INFO - Best params: {'clf__alpha': 0.5, 'vect__max_features': 1000}
+2025-10-13 20:41:25,308 - INFO - Best score (mean CV F1): 0.8515
+2025-10-13 20:41:25,377 - INFO - Test set results (fold 5):
+2025-10-13 20:41:25,400 - INFO -               precision    recall  f1-score   support
+
+           0     0.8642    0.8750    0.8696        80
+           1     0.8734    0.8625    0.8679        80
+
+    accuracy                         0.8688       160
+   macro avg     0.8688    0.8688    0.8687       160
+weighted avg     0.8688    0.8688    0.8687       160
+
+2025-10-13 20:41:25,402 - INFO - Top 5 fake-indicative words: ['luxury' 'millennium' 'smell' 'relax' 'turned']
+2025-10-13 20:41:25,403 - INFO - Top 5 genuine-indicative words: ['priceline' 'elevator' 'cool' '25' 'security']
+2025-10-13 20:41:25,404 - INFO - ========== Unigram + Bigram (TfidfVectorizer) ==========
+2025-10-13 20:41:26,719 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-13 20:41:26,720 - INFO - Using TfidfVectorizer
+2025-10-13 20:41:33,906 - INFO - Best params: {'clf__alpha': 0.1, 'vect__max_features': 3500}
+2025-10-13 20:41:33,907 - INFO - Best score (mean CV F1): 0.8683
+2025-10-13 20:41:34,189 - INFO - Test set results (fold 5):
+2025-10-13 20:41:34,198 - INFO -               precision    recall  f1-score   support
+
+           0     0.8452    0.8875    0.8659        80
+           1     0.8816    0.8375    0.8590        80
+
+    accuracy                         0.8625       160
+   macro avg     0.8634    0.8625    0.8624       160
+weighted avg     0.8634    0.8625    0.8624       160
+
+2025-10-13 20:41:34,202 - INFO - Top 5 fake-indicative words: ['chicago millennium' 'sheraton chicago' 'hotel tower' 'james chicago'
+ 'millennium knickerbocker']
+2025-10-13 20:41:34,203 - INFO - Top 5 genuine-indicative words: ['priceline' 'booked hotel' '25' 'sofa' 'fridge']
+2025-10-13 20:41:34,204 - INFO - === End this run ===
+
+
+
+
+
+
+2025-10-14 18:02:35,702 - INFO - ========== Unigram only (CountVectorizer) ==========
+2025-10-14 18:02:42,435 - INFO - Unigram best params: {'clf__alpha': 1.0, 'vect__max_features': 3000}
+2025-10-14 18:02:42,439 - INFO - Unigram best score (mean CV F1): 0.8601
+2025-10-14 18:02:42,441 - INFO - ========== Unigram + Bigram (FeatureUnion, GridSearchCV) ==========
+2025-10-14 18:02:50,351 - INFO - Combined best params: {'clf__alpha': 1.0, 'features__bigram__max_features': 1000}
+2025-10-14 18:02:50,353 - INFO - Combined best score (mean CV F1): 0.8752
+2025-10-14 18:02:50,390 - INFO - Test set results (fold 5):
+2025-10-14 18:02:50,399 - INFO -               precision    recall  f1-score   support
+
+           0     0.8488    0.9125    0.8795        80
+           1     0.9054    0.8375    0.8701        80
+
+    accuracy                         0.8750       160
+   macro avg     0.8771    0.8750    0.8748       160
+weighted avg     0.8771    0.8750    0.8748       160
+
+2025-10-14 18:02:50,403 - INFO - Top 5 fake-indicative words: ['chicago millennium' 'sheraton chicago' 'millennium knickerbocker'
+ 'hotel tower' 'relax']
+2025-10-14 18:02:50,404 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'booked hotel']
+2025-10-14 18:02:50,406 - INFO - === End this run ===
+
+
+
+
+
+
+2025-10-14 18:04:58,673 - INFO - ========== Unigram only (CountVectorizer) ==========
+2025-10-14 18:05:05,227 - INFO - Unigram best params: {'clf__alpha': 1.0, 'vect__max_features': 3000}
+2025-10-14 18:05:05,232 - INFO - Unigram best score (mean CV F1): 0.8601
+2025-10-14 18:05:05,316 - INFO - Unigram Test set results (fold 5):
+2025-10-14 18:05:05,328 - INFO -               precision    recall  f1-score   support
+
+           0     0.8875    0.8875    0.8875        80
+           1     0.8875    0.8875    0.8875        80
+
+    accuracy                         0.8875       160
+   macro avg     0.8875    0.8875    0.8875       160
+weighted avg     0.8875    0.8875    0.8875       160
+
+2025-10-14 18:05:05,332 - INFO - Unigram Top 5 fake-indicative words: ['relax' 'originally' 'luxury' 'settled' 'egg']
+2025-10-14 18:05:05,336 - INFO - Unigram Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'stated']
+2025-10-14 18:05:05,337 - INFO - ========== Unigram + Bigram (FeatureUnion, GridSearchCV) ==========
+2025-10-14 18:05:12,185 - INFO - Combined best params: {'clf__alpha': 1.0, 'features__bigram__max_features': 1000}
+2025-10-14 18:05:12,186 - INFO - Combined best score (mean CV F1): 0.8752
+2025-10-14 18:05:12,219 - INFO - Test set results (fold 5):
+2025-10-14 18:05:12,227 - INFO -               precision    recall  f1-score   support
+
+           0     0.8488    0.9125    0.8795        80
+           1     0.9054    0.8375    0.8701        80
+
+    accuracy                         0.8750       160
+   macro avg     0.8771    0.8750    0.8748       160
+weighted avg     0.8771    0.8750    0.8748       160
+
+2025-10-14 18:05:12,231 - INFO - Top 5 fake-indicative words: ['chicago millennium' 'sheraton chicago' 'millennium knickerbocker'
+ 'hotel tower' 'relax']
+2025-10-14 18:05:12,233 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'booked hotel']
+2025-10-14 18:05:12,236 - INFO - === End this run ===
+
+
+
+
+
+

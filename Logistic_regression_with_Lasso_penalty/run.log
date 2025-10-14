@@ -691,3 +691,40 @@ weighted avg     0.8192    0.8187    0.8187       160
 
 
 
+2025-10-14 18:21:13,600 - INFO - ========== Unigram only (CountVectorizer) ==========
+2025-10-14 18:21:21,195 - INFO - Unigram best params: {'clf__C': 1, 'vect__max_features': 1000}
+2025-10-14 18:21:21,198 - INFO - Unigram best score (mean CV F1): 0.8165
+2025-10-14 18:21:21,275 - INFO - Unigram Test set results (fold 5):
+2025-10-14 18:21:21,289 - INFO -               precision    recall  f1-score   support
+
+           0     0.8500    0.8500    0.8500        80
+           1     0.8500    0.8500    0.8500        80
+
+    accuracy                         0.8500       160
+   macro avg     0.8500    0.8500    0.8500       160
+weighted avg     0.8500    0.8500    0.8500       160
+
+2025-10-14 18:21:21,292 - INFO - Unigram Top 5 fake-indicative words: ['smelled' 'turned' 'finally' 'millennium' 'chicago']
+2025-10-14 18:21:21,293 - INFO - Unigram Top 5 genuine-indicative words: ['star' 'world' 'concierge' 'street' 'elevator']
+2025-10-14 18:21:21,294 - INFO - ========== Unigram + Bigram (FeatureUnion, CountVectorizer, GridSearchCV) ==========
+2025-10-14 18:21:27,845 - INFO - Combined best params: {'clf__C': 1, 'features__bigram__max_features': 500}
+2025-10-14 18:21:27,846 - INFO - Combined best score (mean CV F1): 0.8147
+2025-10-14 18:21:27,880 - INFO - Test set results (fold 5):
+2025-10-14 18:21:27,903 - INFO -               precision    recall  f1-score   support
+
+           0     0.8395    0.8500    0.8447        80
+           1     0.8481    0.8375    0.8428        80
+
+    accuracy                         0.8438       160
+   macro avg     0.8438    0.8438    0.8437       160
+weighted avg     0.8438    0.8438    0.8437       160
+
+2025-10-14 18:21:27,905 - INFO - Top 5 fake-indicative words: ['relax' 'turned' 'hotel chicago' 'finally' 'smelled']
+2025-10-14 18:21:27,906 - INFO - Top 5 genuine-indicative words: ['star' 'booked hotel' 'elevator' 'concierge' 'street']
+2025-10-14 18:21:28,274 - INFO - === End this run ===
+
+
+
+
+
+

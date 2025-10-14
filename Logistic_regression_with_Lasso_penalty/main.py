@@ -7,7 +7,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.metrics import classification_report
-from sklearn.pipeline import Pipeline
+from sklearn.pipeline import Pipeline, FeatureUnion
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -17,8 +17,6 @@ from sklearn.metrics import confusion_matrix
 
 #%%
 APPEND_LOG = True
-# N_SPLITS_LIST = [3, 4, 5, 8, 10]
-N_SPLITS_LIST = [4]
 
 #%% Logging setup (same as multinomial NB)
 logger = logging.getLogger("my_logger")
@@ -89,7 +87,45 @@ def plot_confusion(y_true, y_pred, title, save_path=None):
         plt.savefig(save_path)
     plt.show()
 
-def run_experiment(ngram_range, n_splits_list=[4], use_tfidf=False):
+def run_unigram_only(X_train, y_train, param_grid, use_tfidf=False):
+    vect_cls = TfidfVectorizer if use_tfidf else CountVectorizer
+    vect = vect_cls(ngram_range=(1,1))
+    pipeline = Pipeline([
+        ('vect', vect),
+        ('clf', LogisticRegression(penalty="l1", solver="liblinear", max_iter=1000))
+    ])
+    cv = StratifiedKFold(n_splits=4, shuffle=True, random_state=42)
+    grid = GridSearchCV(pipeline, param_grid, cv=cv, scoring='f1', n_jobs=-1)
+    grid.fit(X_train, y_train)
+    best_vect = grid.best_estimator_.named_steps['vect']
+    best_vocab = best_vect.vocabulary_
+    best_params = grid.best_params_
+    logger.info(f"Unigram best params: {best_params}")
+    logger.info(f"Unigram best score (mean CV F1): {grid.best_score_:.4f}")
+    return best_vocab, best_params
+
+def run_combined_model(X_train, y_train, param_grid, unigram_vocab, use_tfidf=False):
+    vect_cls = TfidfVectorizer if use_tfidf else CountVectorizer
+    unigram_vect = vect_cls(ngram_range=(1,1), vocabulary=unigram_vocab)
+    bigram_vect = vect_cls(ngram_range=(2,2))
+    combined = FeatureUnion([
+        ('unigram', unigram_vect),
+        ('bigram', bigram_vect)
+    ])
+    pipeline = Pipeline([
+        ('features', combined),
+        ('clf', LogisticRegression(penalty="l1", solver="liblinear", max_iter=1000))
+    ])
+    cv = StratifiedKFold(n_splits=4, shuffle=True, random_state=42)
+    grid = GridSearchCV(
+        pipeline, param_grid=param_grid, cv=cv, scoring='f1', n_jobs=-1
+    )
+    grid.fit(X_train, y_train)
+    logger.info(f"Combined best params: {grid.best_params_}")
+    logger.info(f"Combined best score (mean CV F1): {grid.best_score_:.4f}")
+    return grid.best_estimator_
+
+def run_experiment(use_tfidf=False):
     texts, labels, folds = load_data(DATA_DIR)
     texts = [preprocess(t) for t in texts]
     labels = np.array(labels)
@@ -104,54 +140,62 @@ def run_experiment(ngram_range, n_splits_list=[4], use_tfidf=False):
         'vect__max_features': [500, 1000, 2000, 3000, 3500, 4000],
         'clf__C': [0.001, 0.01, 0.1, 1, 10]
     }
+    combined_param_grid = {
+        'features__bigram__max_features': [500, 1000, 2000, 3000, 3500, 4000],
+        'clf__C': [0.001, 0.01, 0.1, 1, 10]
+    }
+
+    # Step 1: Unigram only
+    logger.info(f"========== Unigram only ({'TFIDF' if use_tfidf else 'CountVectorizer'}) ==========")
+    unigram_vocab, best_unigram_params = run_unigram_only(X_train, y_train, param_grid, use_tfidf=use_tfidf)
+
+    # Evaluate unigram model on test set
     vect_cls = TfidfVectorizer if use_tfidf else CountVectorizer
+    best_unigram_vect = vect_cls(ngram_range=(1,1), vocabulary=unigram_vocab)
+    unigram_pipeline = Pipeline([
+        ('vect', best_unigram_vect),
+        ('clf', LogisticRegression(penalty="l1", solver="liblinear", max_iter=1000, C=best_unigram_params['clf__C']))
+    ])
+    unigram_pipeline.fit(X_train, y_train)
+    y_pred_uni = unigram_pipeline.predict(X_test)
+    logger.info(f"Unigram Test set results (fold 5):")
+    logger.info(classification_report(y_test, y_pred_uni, digits=4))
+    # Show top features for unigram
+    feature_names_uni = best_unigram_vect.get_feature_names_out()
+    clf_uni = unigram_pipeline.named_steps['clf']
+    coefs_uni = clf_uni.coef_[0]
+    top_fake_uni = feature_names_uni[np.argsort(coefs_uni)[-5:][::-1]]
+    top_genuine_uni = feature_names_uni[np.argsort(coefs_uni)[:5]]
+    logger.info(f"Unigram Top 5 fake-indicative words: {top_fake_uni}")
+    logger.info(f"Unigram Top 5 genuine-indicative words: {top_genuine_uni}")
 
-    for n_splits in n_splits_list:
-        logger.info(f"--- GridSearchCV with StratifiedKFold n_splits={n_splits} ---")
-        pipeline = Pipeline([
-            ('vect', vect_cls(ngram_range=ngram_range)),
-            ('clf', LogisticRegression(penalty="l1", solver="liblinear", max_iter=1000))
-        ])
-        cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
-        grid = GridSearchCV(pipeline, param_grid, cv=cv, scoring='f1', n_jobs=-1)
-        grid.fit(X_train, y_train)
+    # Step 2: Combined model (unigram vocab + bigram, FeatureUnion, GridSearchCV)
+    logger.info(f"========== Unigram + Bigram (FeatureUnion, {'TFIDF' if use_tfidf else 'CountVectorizer'}, GridSearchCV) ==========")
+    best_combined_model = run_combined_model(X_train, y_train, combined_param_grid, unigram_vocab, use_tfidf=use_tfidf)
 
-        logger.info(f"Best params: {grid.best_params_}")
-        logger.info(f"Best score (mean CV F1): {grid.best_score_:.4f}")
+    # Evaluate on test set
+    y_pred = best_combined_model.predict(X_test)
+    logger.info(f"Test set results (fold 5):")
+    logger.info(classification_report(y_test, y_pred, digits=4))
 
-        best_model = grid.best_estimator_
-        best_model.fit(X_train, y_train)
+    # Show top features
+    unigram_feat = best_combined_model.named_steps['features'].transformer_list[0][1].get_feature_names_out()
+    bigram_feat = best_combined_model.named_steps['features'].transformer_list[1][1].get_feature_names_out()
+    feature_names = np.concatenate([unigram_feat, bigram_feat])
+    clf = best_combined_model.named_steps['clf']
+    coefs = clf.coef_[0]
+    top_fake = feature_names[np.argsort(coefs)[-5:][::-1]]
+    top_genuine = feature_names[np.argsort(coefs)[:5]]
+    logger.info(f"Top 5 fake-indicative words: {top_fake}")
+    logger.info(f"Top 5 genuine-indicative words: {top_genuine}")
 
-        y_pred = best_model.predict(X_test)
-        logger.info(f"Test set results (fold 5):")
-        logger.info(classification_report(y_test, y_pred, digits=4))
-
-        # --- Visualization: Confusion Matrix ---
-        plot_title = f"Confusion Matrix (n_splits={n_splits}, {'TFIDF' if use_tfidf else 'Count'}, ngram={ngram_range})"
-        save_path = f"confmat_{'tfidf' if use_tfidf else 'count'}_{ngram_range[0]}_{ngram_range[1]}_{n_splits}.png"
-        plot_confusion(y_test, y_pred, plot_title, save_path=save_path)
-        # --- End Visualization: Confusion Matrix ---
-
-        vect = best_model.named_steps['vect']
-        clf = best_model.named_steps['clf']
-        feature_names = np.array(vect.get_feature_names_out())
-        coefs = clf.coef_[0]
-        top_fake = feature_names[np.argsort(coefs)[-5:][::-1]]
-        top_genuine = feature_names[np.argsort(coefs)[:5]]
-        logger.info(f"Top 5 fake-indicative words: {top_fake}")
-        logger.info(f"Top 5 genuine-indicative words: {top_genuine}")
-
-def main():
-    logger.info("========== Unigram only (CountVectorizer) ==========")
-    run_experiment((1,1), n_splits_list=N_SPLITS_LIST, use_tfidf=False)
-    logger.info("========== Unigram + Bigram (CountVectorizer) ==========")
-    run_experiment((1,2), n_splits_list=N_SPLITS_LIST, use_tfidf=False)
-    logger.info("========== Unigram only (TFIDF) ==========")
-    run_experiment((1,1), n_splits_list=N_SPLITS_LIST, use_tfidf=True)
-    logger.info("========== Unigram + Bigram (TFIDF) ==========")
-    run_experiment((1,2), n_splits_list=N_SPLITS_LIST, use_tfidf=True)
+    # --- Visualization: Confusion Matrix ---
+    plot_title = f"Confusion Matrix ({'TFIDF' if use_tfidf else 'Count'}, Unigram+Bigram)"
+    save_path = f"confmat_{'tfidf' if use_tfidf else 'count'}_1_2_combined.png"
+    plot_confusion(y_test, y_pred, plot_title, save_path=save_path)
+    # --- End Visualization: Confusion Matrix ---
 
 #%%
 if __name__ == "__main__":
-    main()
+    run_experiment(use_tfidf=False)
     logger.info("=== End this run ===\n" + ("\n" * 5))
