@@ -15,9 +15,6 @@ from nltk.stem import WordNetLemmatizer
 #%%
 APPEND_LOG = True  # Set to False to disable log file output
 
-# N_SPLITS_LIST = [3, 4, 5, 8, 10]  # Using different n_splits is not improving performance in this case, so we keep it simple
-N_SPLITS_LIST = [4]
-
 # Set data directory relative to this script
 DATA_DIR = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '../data/negative_polarity')
@@ -188,11 +185,8 @@ def run_experiment():
     top_genuine = feature_names[np.argsort(log_prob[0] - log_prob[1])[-5:][::-1]]
     logger.info(f"Top 5 fake-indicative words: {top_fake}")
     logger.info(f"Top 5 genuine-indicative words: {top_genuine}")
-
     
 #%%
 if __name__ == "__main__":
     run_experiment()
     logger.info("=== End this run ===\n" + ("\n" * 5))
-
-# %%

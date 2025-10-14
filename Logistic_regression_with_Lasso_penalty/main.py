@@ -16,7 +16,7 @@ import seaborn as sns
 from sklearn.metrics import confusion_matrix
 
 #%%
-APPEND_LOG = True
+APPEND_LOG = False
 
 #%% Logging setup (same as multinomial NB)
 logger = logging.getLogger("my_logger")
@@ -87,8 +87,12 @@ def plot_confusion(y_true, y_pred, title, save_path=None):
         plt.savefig(save_path)
     plt.show()
 
-def run_unigram_only(X_train, y_train, param_grid, use_tfidf=False):
-    vect_cls = TfidfVectorizer if use_tfidf else CountVectorizer
+def run_unigram_only(X_train, y_train, param_grid, vectorizer='count'):
+    vect_cls = None
+    if vectorizer == 'tfidf':
+        vect_cls = TfidfVectorizer
+    if vectorizer == 'count':
+        vect_cls = CountVectorizer
     vect = vect_cls(ngram_range=(1,1))
     pipeline = Pipeline([
         ('vect', vect),
@@ -104,8 +108,12 @@ def run_unigram_only(X_train, y_train, param_grid, use_tfidf=False):
     logger.info(f"Unigram best score (mean CV F1): {grid.best_score_:.4f}")
     return best_vocab, best_params
 
-def run_combined_model(X_train, y_train, param_grid, unigram_vocab, use_tfidf=False):
-    vect_cls = TfidfVectorizer if use_tfidf else CountVectorizer
+def run_combined_model(X_train, y_train, param_grid, unigram_vocab, vectorizer='count'):
+    vect_cls = None
+    if vectorizer == 'tfidf':
+        vect_cls = TfidfVectorizer
+    if vectorizer == 'count':
+        vect_cls = CountVectorizer
     unigram_vect = vect_cls(ngram_range=(1,1), vocabulary=unigram_vocab)
     bigram_vect = vect_cls(ngram_range=(2,2))
     combined = FeatureUnion([
@@ -125,7 +133,7 @@ def run_combined_model(X_train, y_train, param_grid, unigram_vocab, use_tfidf=Fa
     logger.info(f"Combined best score (mean CV F1): {grid.best_score_:.4f}")
     return grid.best_estimator_
 
-def run_experiment(use_tfidf=False):
+def run_experiment(vectorizer='count'):
     texts, labels, folds = load_data(DATA_DIR)
     texts = [preprocess(t) for t in texts]
     labels = np.array(labels)
@@ -146,11 +154,15 @@ def run_experiment(use_tfidf=False):
     }
 
     # Step 1: Unigram only
-    logger.info(f"========== Unigram only ({'TFIDF' if use_tfidf else 'CountVectorizer'}) ==========")
-    unigram_vocab, best_unigram_params = run_unigram_only(X_train, y_train, param_grid, use_tfidf=use_tfidf)
+    logger.info(f"========== Unigram only ({vectorizer}) ==========")
+    unigram_vocab, best_unigram_params = run_unigram_only(X_train, y_train, param_grid, vectorizer=vectorizer)
 
     # Evaluate unigram model on test set
-    vect_cls = TfidfVectorizer if use_tfidf else CountVectorizer
+    vect_cls = None
+    if vectorizer == 'tfidf':
+        vect_cls = TfidfVectorizer
+    if vectorizer == 'count':
+        vect_cls = CountVectorizer
     best_unigram_vect = vect_cls(ngram_range=(1,1), vocabulary=unigram_vocab)
     unigram_pipeline = Pipeline([
         ('vect', best_unigram_vect),
@@ -170,8 +182,8 @@ def run_experiment(use_tfidf=False):
     logger.info(f"Unigram Top 5 genuine-indicative words: {top_genuine_uni}")
 
     # Step 2: Combined model (unigram vocab + bigram, FeatureUnion, GridSearchCV)
-    logger.info(f"========== Unigram + Bigram (FeatureUnion, {'TFIDF' if use_tfidf else 'CountVectorizer'}, GridSearchCV) ==========")
-    best_combined_model = run_combined_model(X_train, y_train, combined_param_grid, unigram_vocab, use_tfidf=use_tfidf)
+    logger.info(f"========== Unigram + Bigram (FeatureUnion, {vectorizer}, GridSearchCV) ==========")
+    best_combined_model = run_combined_model(X_train, y_train, combined_param_grid, unigram_vocab, vectorizer=vectorizer)
 
     # Evaluate on test set
     y_pred = best_combined_model.predict(X_test)
@@ -190,12 +202,13 @@ def run_experiment(use_tfidf=False):
     logger.info(f"Top 5 genuine-indicative words: {top_genuine}")
 
     # --- Visualization: Confusion Matrix ---
-    plot_title = f"Confusion Matrix ({'TFIDF' if use_tfidf else 'Count'}, Unigram+Bigram)"
-    save_path = f"confmat_{'tfidf' if use_tfidf else 'count'}_1_2_combined.png"
-    plot_confusion(y_test, y_pred, plot_title, save_path=save_path)
+    # plot_title = f"Confusion Matrix ({vectorizer}, Unigram+Bigram)"
+    # save_path = f"confmat_{vectorizer}_1_2_combined.png"
+    # plot_confusion(y_test, y_pred, plot_title, save_path=save_path)
     # --- End Visualization: Confusion Matrix ---
 
 #%%
 if __name__ == "__main__":
-    run_experiment(use_tfidf=False)
+    run_experiment(vectorizer='count')
+    run_experiment(vectorizer='tfidf')
     logger.info("=== End this run ===\n" + ("\n" * 5))
