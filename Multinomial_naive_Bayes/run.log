@@ -564,3 +564,51 @@ weighted avg     0.8771    0.8750    0.8748       160
 
 
 
+
+
+
+
+
+
+
+2025-10-15 13:51:10,794 - INFO - ========== Unigram only ==========
+2025-10-15 13:51:15,057 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-15 13:51:20,700 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 3000}
+2025-10-15 13:51:20,700 - INFO - Best score (mean CV F1): 0.8601
+2025-10-15 13:51:20,767 - INFO - Test set results (fold 5):
+2025-10-15 13:51:20,777 - INFO -               precision    recall  f1-score   support
+
+           0     0.8875    0.8875    0.8875        80
+           1     0.8875    0.8875    0.8875        80
+
+    accuracy                         0.8875       160
+   macro avg     0.8875    0.8875    0.8875       160
+weighted avg     0.8875    0.8875    0.8875       160
+
+2025-10-15 13:51:20,779 - INFO - Top 5 fake-indicative words: ['relax' 'originally' 'luxury' 'settled' 'egg']
+2025-10-15 13:51:20,779 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'fridge' 'stated']
+
+2025-10-15 13:51:20,780 - INFO - ========== Unigram + Bigram ==========
+2025-10-15 13:51:22,792 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-15 13:51:28,744 - INFO - Best params: {'clf__alpha': 0.5, 'vect__max_features': 3000}
+2025-10-15 13:51:28,744 - INFO - Best score (mean CV F1): 0.8724
+2025-10-15 13:51:29,063 - INFO - Test set results (fold 5):
+2025-10-15 13:51:29,076 - INFO -               precision    recall  f1-score   support
+
+           0     0.8427    0.9375    0.8876        80
+           1     0.9296    0.8250    0.8742        80
+
+    accuracy                         0.8812       160
+   macro avg     0.8861    0.8812    0.8809       160
+weighted avg     0.8861    0.8812    0.8809       160
+
+2025-10-15 13:51:29,078 - INFO - Top 5 fake-indicative words: ['chicago millennium' 'sheraton chicago' 'hotel tower'
+ 'millennium knickerbocker' 'relax']
+2025-10-15 13:51:29,079 - INFO - Top 5 genuine-indicative words: ['priceline' 'sofa' '25' 'booked hotel' 'fridge']
+2025-10-15 13:51:29,081 - INFO - === End this run ===
+
+
+
+
+
+

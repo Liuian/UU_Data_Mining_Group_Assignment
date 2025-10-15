@@ -1,4 +1,48 @@
 #%%
+"""
+This script implements and evaluates a Multinomial Naive Bayes classifier for
+deceptive opinion spam detection. It follows a two-stage experimental design
+to compare the performance of a model using only unigram features against a
+model using a combination of unigram and bigram features.
+
+Experimental Design:
+
+The `main` function orchestrates two independent experiments by calling the
+`run_experiment` function twice:
+
+1.  Unigram Only (`run_experiment((1,1), ...)`):
+    - A `CountVectorizer` is configured with `ngram_range=(1,1)`.
+    - It builds a candidate vocabulary consisting solely of unigrams (single words)
+      from the training data.
+    - `GridSearchCV` then searches for the best `max_features` by selecting the
+      top N most frequent unigrams from this candidate pool.
+
+2.  Unigram + Bigram (`run_experiment((1,2), ...)`):
+    - A new `CountVectorizer` is configured with `ngram_range=(1,2)`.
+    - It builds a new, mixed candidate vocabulary containing *both* unigrams
+      and bigrams from the training data.
+    - `GridSearchCV` again searches for the best `max_features`. However, in this
+      run, it selects the top N features from the *mixed* pool, where unigrams
+      and bigrams compete for inclusion based on their overall frequency.
+
+Key Distinction:
+The core difference lies in how the final features are selected:
+
+-   **Identical Candidate Pool for Unigrams:** Before hyperparameter tuning,
+    the pool of *all possible* unigram features is identical for both
+    experiments because they both process the same training data.
+
+-   **Different Competitive Environments:**
+    - In the first experiment, unigrams only compete against other unigrams
+      for a spot in the final `max_features` set.
+    - In the second experiment, unigrams must compete against bigrams for
+      those same spots.
+
+As a result, the final set of unigram features chosen for the second model is
+not guaranteed to be the same as the set chosen for the first model. This
+design differs from a `FeatureUnion` approach, where a pre-selected unigram
+vocabulary is explicitly combined with a separately generated bigram vocabulary.
+"""
 import os
 import logging
 import string
@@ -14,10 +58,10 @@ from nltk.stem import WordNetLemmatizer
 
 #%%
 APPEND_LOG = True  # Set to False to disable log file output
-N_SPLITS_LIST = [3, 4, 5, 8, 10]  # Try different n_splits
+# N_SPLITS_LIST = [3, 4, 5, 8, 10]  # Try different n_splits
+N_SPLITS_LIST = [4]  # Try different n_splits
 
-#%%
-# ---------- Logging setup with two handlers ----------
+#%% ---------- Logging setup with two handlers ----------
 logger = logging.getLogger("my_logger")
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
@@ -40,8 +84,7 @@ stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 # ---------- End logging setup ----------
 
-#%%
-# ---------- NLTK setup ----------
+#%% ---------- NLTK setup ----------
 nltk_data_dir = os.path.join(os.path.dirname(__file__))  # Set NLTK data directory to the same directory as this script
 nltk.data.path.append(nltk_data_dir)  # Add this directory to NLTK data path
 nltk.download('stopwords', download_dir=nltk_data_dir)

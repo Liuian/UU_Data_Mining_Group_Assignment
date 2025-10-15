@@ -1,3 +1,48 @@
+"""
+This script implements and evaluates a Logistic Regression classifier with an L1 (Lasso) penalty
+for deceptive opinion spam detection. It follows a multi-stage experimental design
+to compare the performance of different feature sets (unigrams vs. unigrams+bigrams)
+and vectorization methods (CountVectorizer vs. TfidfVectorizer).
+
+Experimental Design:
+
+The `main` function orchestrates four independent experiments by calling the
+`run_experiment` function with different parameters:
+
+1.  Unigram Only (`ngram_range=(1,1)`):
+    - A vectorizer (`CountVectorizer` or `TfidfVectorizer`) is configured with `ngram_range=(1,1)`.
+    - It builds a candidate vocabulary consisting solely of unigrams (single words)
+      from the training data.
+    - `GridSearchCV` then searches for the best `max_features` by selecting the
+      top N most frequent/important features from this candidate pool.
+
+2.  Unigram + Bigram (`ngram_range=(1,2)`):
+    - A new vectorizer is configured with `ngram_range=(1,2)`.
+    - It builds a new, mixed candidate vocabulary containing *both* unigrams
+      and bigrams from the training data.
+    - `GridSearchCV` again searches for the best `max_features`. However, in this
+      run, it selects the top N features from the *mixed* pool, where unigrams
+      and bigrams compete for inclusion based on their overall frequency/importance.
+
+Key Distinction:
+The core difference lies in how the final features are selected:
+
+-   **Identical Candidate Pool for Unigrams:** Before hyperparameter tuning,
+    the pool of *all possible* unigram features is identical for both
+    the unigram-only and the unigram+bigram experiments because they both
+    process the same training data.
+
+-   **Different Competitive Environments:**
+    - In the unigram-only experiment, unigrams only compete against other unigrams
+      for a spot in the final `max_features` set.
+    - In the unigram+bigram experiment, unigrams must compete against bigrams for
+      those same spots.
+
+As a result, the final set of unigram features chosen for the unigram+bigram model is
+not guaranteed to be the same as the set chosen for the unigram-only model. This
+design differs from a `FeatureUnion` approach, where a pre-selected unigram
+vocabulary is explicitly combined with a separately generated bigram vocabulary.
+"""
 #%%
 import os
 import logging
@@ -132,4 +177,4 @@ def main():
 #%%
 if __name__ == "__main__":
     main()
-    logger.info("=== End this run ===\n" + ("\n" * 5))
+    logger.info("======================= End this run ==========================\n" + ("\n" * 5))
