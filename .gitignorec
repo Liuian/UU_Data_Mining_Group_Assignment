@@ -1,0 +1,12 @@
+.python-version
+note.md
+.DS_Store
+.gitignore
+.vscode
+
+# Ignore generated report files
+reports/logistic_regression_unigram.csv
+reports/merge_predictions.py
+reports/merged_model_predictions.csv
+reports/naive_bayes_unigram.csv
+

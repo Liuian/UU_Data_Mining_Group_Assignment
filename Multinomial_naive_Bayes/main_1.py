@@ -59,19 +59,22 @@ DATA_DIR = os.path.abspath(
 #%%
 def load_data(data_dir):
     # Load all reviews, labels, and fold numbers
-    texts, labels, folds = [], [], []
+    texts, labels, folds, fnames = [], [], [], []
     for label_dir, label in [('deceptive_from_MTurk', 1), ('truthful_from_Web', 0)]:
         label_path = os.path.join(data_dir, label_dir)  # label_path: data/negative_polarity/deceptive_from_MTurk or truthful_from_Web
         for fold_name in sorted(os.listdir(label_path)):
             fold_num = int(fold_name.replace('fold', ''))
             fold_path = os.path.join(label_path, fold_name)
             for fname in sorted(os.listdir(fold_path)):
+                # Keep only the base name of the file as id, e.g., "t_hilton_1.txt"
+                file_id = os.path.basename(fname)
                 fpath = os.path.join(fold_path, fname)
                 with open(fpath, encoding='utf-8') as f:
                     texts.append(f.read())
                 labels.append(label)
                 folds.append(fold_num)
-    return texts, labels, folds
+                fnames.append(file_id)
+    return texts, labels, folds, fnames
 
 def preprocess(text):
     stop_words = set(stopwords.words('english'))
@@ -87,20 +90,31 @@ def preprocess(text):
     tokens = [lemmatizer.lemmatize(w) for w in tokens]
     return ' '.join(tokens)
 
-def run_experiment(ngram_range, n_splits_list=[4]):
-    texts, labels, folds = load_data(DATA_DIR)
+def save_predictions_to_csv(ids, y_true, y_pred, filename, out_dir="reports"):
+    """Saves predictions to a CSV file with id, true_label, and predicted_label."""
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+    
+    df = pd.DataFrame({
+        "id": ids,
+        "true_label": y_true,
+        "predicted_label": y_pred
+    })
+    csv_path = os.path.join(out_dir, filename)
+    df.to_csv(csv_path, index=False)
+    logger.info(f"Saved test predictions to: {csv_path}")
+
+def run_experiment(ngram_range, n_splits_list=[4], csv_filename="preds.csv"):
+    texts, labels, folds, fnames = load_data(DATA_DIR)
     # test
     # print(f"texts: {texts[:2]}\n labels: {labels[:2]}\n flods: {folds[:2]}")
     texts = [preprocess(t) for t in texts]
     # test
     # print(f"Preprocessed texts: {texts[:2]}")
-    labels = np.array(labels)   # Convert to numpy array
-    folds = np.array(folds) # Convert to numpy array
-
-    train_idx = np.where(folds < 5)[0]
-    test_idx = np.where(folds == 5)[0]
+    labels, folds, fnames = np.array(labels), np.array(folds), np.array(fnames)
+    train_idx, test_idx = np.where(folds < 5)[0], np.where(folds == 5)[0]
     X_train, y_train = [texts[i] for i in train_idx], labels[train_idx]
-    X_test, y_test = [texts[i] for i in test_idx], labels[test_idx]
+    X_test, y_test, fnames_test = [texts[i] for i in test_idx], labels[test_idx], fnames[test_idx]
 
     param_grid = {
         'vect__max_features': [500, 1000, 2000, 3000, 3500, 4000],    # Limit vocabulary size
@@ -126,6 +140,9 @@ def run_experiment(ngram_range, n_splits_list=[4]):
         y_pred = best_model.predict(X_test)
         logger.info(f"Test set results (fold 5):")
         logger.info(classification_report(y_test, y_pred, digits=4))
+
+        # Save predictions to CSV
+        save_predictions_to_csv(fnames_test, y_test, y_pred, filename=csv_filename)
 
         # --- Feature Importance and Correlation Analysis ---
         vect = best_model.named_steps['vect']
@@ -161,9 +178,9 @@ def run_experiment(ngram_range, n_splits_list=[4]):
 
 def main():
     logger.info("========== Unigram only ==========")
-    run_experiment((1,1), n_splits_list=N_SPLITS_LIST)
+    run_experiment((1,1), n_splits_list=N_SPLITS_LIST, csv_filename="preds_unigram.csv")
     logger.info("========== Unigram + Bigram ==========")
-    run_experiment((1,2), n_splits_list=N_SPLITS_LIST)
+    run_experiment((1,2), n_splits_list=N_SPLITS_LIST, csv_filename="preds_unigram_bigram.csv")
 
 #%%
 if __name__ == "__main__":

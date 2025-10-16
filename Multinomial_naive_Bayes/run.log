@@ -710,3 +710,139 @@ weighted avg     0.8875    0.8875    0.8875       160
    macro avg     0.8875    0.8875    0.8875       160
 weighted avg     0.8875    0.8875    0.8875       160
 
+2025-10-16 18:03:54,414 - INFO - ========== Unigram only ==========
+2025-10-16 18:03:58,613 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-16 18:04:04,329 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 3000}
+2025-10-16 18:04:04,331 - INFO - Best score (mean CV F1): 0.8601
+2025-10-16 18:04:04,422 - INFO - Test set results (fold 5):
+2025-10-16 18:04:04,439 - INFO -               precision    recall  f1-score   support
+
+           0     0.8875    0.8875    0.8875        80
+           1     0.8875    0.8875    0.8875        80
+
+    accuracy                         0.8875       160
+   macro avg     0.8875    0.8875    0.8875       160
+weighted avg     0.8875    0.8875    0.8875       160
+
+2025-10-16 18:04:07,389 - INFO - 
+--- Top 5 Fake-indicative terms ---
+2025-10-16 18:04:07,394 - INFO -    Feature  Importance  Correlation
+     relax    2.725262     0.149547
+originally    2.582161     0.132242
+    luxury    2.562743     0.223338
+   settled    2.415107     0.125988
+       egg    2.319797     0.112509
+2025-10-16 18:04:07,394 - INFO - 
+--- Top 5 Genuine-indicative terms ---
+2025-10-16 18:04:07,396 - INFO -   Feature  Importance  Correlation
+priceline   -3.027310    -0.149547
+     sofa   -2.690838    -0.125988
+       25   -2.690838    -0.138233
+   fridge   -2.621845    -0.119428
+   stated   -2.547737    -0.119428
+2025-10-16 18:04:07,396 - INFO - ========== Unigram + Bigram ==========
+2025-10-16 18:04:08,776 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-16 18:04:16,361 - INFO - Best params: {'clf__alpha': 0.5, 'vect__max_features': 3000}
+2025-10-16 18:04:16,362 - INFO - Best score (mean CV F1): 0.8724
+2025-10-16 18:04:16,785 - INFO - Test set results (fold 5):
+2025-10-16 18:04:16,800 - INFO -               precision    recall  f1-score   support
+
+           0     0.8427    0.9375    0.8876        80
+           1     0.9296    0.8250    0.8742        80
+
+    accuracy                         0.8812       160
+   macro avg     0.8861    0.8812    0.8809       160
+weighted avg     0.8861    0.8812    0.8809       160
+
+2025-10-16 18:04:19,718 - INFO - 
+--- Top 5 Fake-indicative terms ---
+2025-10-16 18:04:19,719 - INFO -                  Feature  Importance  Correlation
+      chicago millennium    3.721758     0.165189
+        sheraton chicago    3.624119     0.160128
+millennium knickerbocker    3.394545     0.138233
+             hotel tower    3.394545     0.138233
+                   relax    3.327853     0.149547
+2025-10-16 18:04:19,719 - INFO - 
+--- Top 5 Genuine-indicative terms ---
+2025-10-16 18:04:19,720 - INFO -      Feature  Importance  Correlation
+   priceline   -3.753015    -0.149547
+        sofa   -3.406738    -0.125988
+          25   -3.406738    -0.138233
+booked hotel   -3.335279    -0.143992
+      fridge   -3.335279    -0.119428
+2025-10-16 18:04:19,721 - INFO - ==================== End this run ====================
+
+
+
+
+
+
+2025-10-16 18:09:50,465 - INFO - ========== Unigram only ==========
+2025-10-16 18:09:55,081 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-16 18:10:01,226 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 3000}
+2025-10-16 18:10:01,227 - INFO - Best score (mean CV F1): 0.8601
+2025-10-16 18:10:01,311 - INFO - Test set results (fold 5):
+2025-10-16 18:10:01,324 - INFO -               precision    recall  f1-score   support
+
+           0     0.8875    0.8875    0.8875        80
+           1     0.8875    0.8875    0.8875        80
+
+    accuracy                         0.8875       160
+   macro avg     0.8875    0.8875    0.8875       160
+weighted avg     0.8875    0.8875    0.8875       160
+
+2025-10-16 18:10:01,338 - INFO - Saved test predictions to: reports/preds_unigram.csv
+2025-10-16 18:10:04,077 - INFO - 
+--- Top 5 Fake-indicative terms ---
+2025-10-16 18:10:04,080 - INFO -    Feature  Importance  Correlation
+     relax    2.725262     0.149547
+originally    2.582161     0.132242
+    luxury    2.562743     0.223338
+   settled    2.415107     0.125988
+       egg    2.319797     0.112509
+2025-10-16 18:10:04,081 - INFO - 
+--- Top 5 Genuine-indicative terms ---
+2025-10-16 18:10:04,082 - INFO -   Feature  Importance  Correlation
+priceline   -3.027310    -0.149547
+     sofa   -2.690838    -0.125988
+       25   -2.690838    -0.138233
+   fridge   -2.621845    -0.119428
+   stated   -2.547737    -0.119428
+2025-10-16 18:10:04,082 - INFO - ========== Unigram + Bigram ==========
+2025-10-16 18:10:05,452 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-16 18:10:10,898 - INFO - Best params: {'clf__alpha': 0.5, 'vect__max_features': 3000}
+2025-10-16 18:10:10,899 - INFO - Best score (mean CV F1): 0.8724
+2025-10-16 18:10:11,137 - INFO - Test set results (fold 5):
+2025-10-16 18:10:11,145 - INFO -               precision    recall  f1-score   support
+
+           0     0.8427    0.9375    0.8876        80
+           1     0.9296    0.8250    0.8742        80
+
+    accuracy                         0.8812       160
+   macro avg     0.8861    0.8812    0.8809       160
+weighted avg     0.8861    0.8812    0.8809       160
+
+2025-10-16 18:10:11,146 - INFO - Saved test predictions to: reports/preds_unigram_bigram.csv
+2025-10-16 18:10:13,446 - INFO - 
+--- Top 5 Fake-indicative terms ---
+2025-10-16 18:10:13,448 - INFO -                  Feature  Importance  Correlation
+      chicago millennium    3.721758     0.165189
+        sheraton chicago    3.624119     0.160128
+millennium knickerbocker    3.394545     0.138233
+             hotel tower    3.394545     0.138233
+                   relax    3.327853     0.149547
+2025-10-16 18:10:13,448 - INFO - 
+--- Top 5 Genuine-indicative terms ---
+2025-10-16 18:10:13,449 - INFO -      Feature  Importance  Correlation
+   priceline   -3.753015    -0.149547
+        sofa   -3.406738    -0.125988
+          25   -3.406738    -0.138233
+booked hotel   -3.335279    -0.143992
+      fridge   -3.335279    -0.119428
+2025-10-16 18:10:13,450 - INFO - ==================== End this run ====================
+
+
+
+
+
+
