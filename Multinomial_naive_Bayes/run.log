@@ -612,3 +612,101 @@ weighted avg     0.8861    0.8812    0.8809       160
 
 
 
+2025-10-15 14:04:55,523 - INFO - ========== Unigram only ==========
+2025-10-15 14:05:00,679 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-15 14:05:07,668 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 3000}
+2025-10-15 14:05:07,668 - INFO - Best score (mean CV F1): 0.8601
+2025-10-15 14:05:07,782 - INFO - Test set results (fold 5):
+2025-10-15 14:05:07,795 - INFO -               precision    recall  f1-score   support
+
+           0     0.8875    0.8875    0.8875        80
+           1     0.8875    0.8875    0.8875        80
+
+    accuracy                         0.8875       160
+   macro avg     0.8875    0.8875    0.8875       160
+weighted avg     0.8875    0.8875    0.8875       160
+
+2025-10-15 14:05:10,587 - INFO - 
+--- Top 5 Fake-indicative terms ---
+2025-10-15 14:05:10,591 - INFO - 
+   Feature  Importance  Correlation
+     relax    2.725262     0.149547
+originally    2.582161     0.132242
+    luxury    2.562743     0.223338
+   settled    2.415107     0.125988
+       egg    2.319797     0.112509
+2025-10-15 14:05:10,591 - INFO - 
+--- Top 5 Genuine-indicative terms ---
+2025-10-15 14:05:10,593 - INFO - 
+  Feature  Importance  Correlation
+priceline   -3.027310    -0.149547
+     sofa   -2.690838    -0.125988
+       25   -2.690838    -0.138233
+   fridge   -2.621845    -0.119428
+   stated   -2.547737    -0.119428
+2025-10-15 14:05:10,593 - INFO - ========== Unigram + Bigram ==========
+2025-10-15 14:05:12,442 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-15 14:05:17,736 - INFO - Best params: {'clf__alpha': 0.5, 'vect__max_features': 3000}
+2025-10-15 14:05:17,737 - INFO - Best score (mean CV F1): 0.8724
+2025-10-15 14:05:17,988 - INFO - Test set results (fold 5):
+2025-10-15 14:05:17,995 - INFO - 
+              precision    recall  f1-score   support
+
+           0     0.8427    0.9375    0.8876        80
+           1     0.9296    0.8250    0.8742        80
+
+    accuracy                         0.8812       160
+   macro avg     0.8861    0.8812    0.8809       160
+weighted avg     0.8861    0.8812    0.8809       160
+
+2025-10-15 14:05:20,355 - INFO - 
+--- Top 5 Fake-indicative terms ---
+2025-10-15 14:05:20,356 - INFO -                  Feature  Importance  Correlation
+      chicago millennium    3.721758     0.165189
+        sheraton chicago    3.624119     0.160128
+millennium knickerbocker    3.394545     0.138233
+             hotel tower    3.394545     0.138233
+                   relax    3.327853     0.149547
+2025-10-15 14:05:20,356 - INFO - 
+--- Top 5 Genuine-indicative terms ---
+2025-10-15 14:05:20,357 - INFO -      Feature  Importance  Correlation
+   priceline   -3.753015    -0.149547
+        sofa   -3.406738    -0.125988
+          25   -3.406738    -0.138233
+booked hotel   -3.335279    -0.143992
+      fridge   -3.335279    -0.119428
+2025-10-15 14:05:20,358 - INFO - === End this run ===
+
+
+
+
+
+
+2025-10-16 17:35:50,081 - INFO - ========== Unigram only ==========
+2025-10-16 17:35:53,999 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-16 17:35:59,840 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 3000}
+2025-10-16 17:35:59,841 - INFO - Best score (mean CV F1): 0.8601
+2025-10-16 17:35:59,944 - INFO - Test set results (fold 5):
+2025-10-16 17:35:59,961 - INFO -               precision    recall  f1-score   support
+
+           0     0.8875    0.8875    0.8875        80
+           1     0.8875    0.8875    0.8875        80
+
+    accuracy                         0.8875       160
+   macro avg     0.8875    0.8875    0.8875       160
+weighted avg     0.8875    0.8875    0.8875       160
+
+2025-10-16 17:36:42,174 - INFO - ========== Unigram only ==========
+2025-10-16 17:36:46,383 - INFO - --- GridSearchCV with StratifiedKFold n_splits=4 ---
+2025-10-16 17:36:52,780 - INFO - Best params: {'clf__alpha': 1.0, 'vect__max_features': 3000}
+2025-10-16 17:36:52,781 - INFO - Best score (mean CV F1): 0.8601
+2025-10-16 17:36:52,925 - INFO - Test set results (fold 5):
+2025-10-16 17:36:52,936 - INFO -               precision    recall  f1-score   support
+
+           0     0.8875    0.8875    0.8875        80
+           1     0.8875    0.8875    0.8875        80
+
+    accuracy                         0.8875       160
+   macro avg     0.8875    0.8875    0.8875       160
+weighted avg     0.8875    0.8875    0.8875       160
+

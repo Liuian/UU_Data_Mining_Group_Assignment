@@ -1,65 +1,23 @@
-"""
-This script implements and evaluates a Logistic Regression classifier with an L1 (Lasso) penalty
-for deceptive opinion spam detection. It follows a multi-stage experimental design
-to compare the performance of different feature sets (unigrams vs. unigrams+bigrams)
-and vectorization methods (CountVectorizer vs. TfidfVectorizer).
-
-Experimental Design:
-
-The `main` function orchestrates four independent experiments by calling the
-`run_experiment` function with different parameters:
-
-1.  Unigram Only (`ngram_range=(1,1)`):
-    - A vectorizer (`CountVectorizer` or `TfidfVectorizer`) is configured with `ngram_range=(1,1)`.
-    - It builds a candidate vocabulary consisting solely of unigrams (single words)
-      from the training data.
-    - `GridSearchCV` then searches for the best `max_features` by selecting the
-      top N most frequent/important features from this candidate pool.
-
-2.  Unigram + Bigram (`ngram_range=(1,2)`):
-    - A new vectorizer is configured with `ngram_range=(1,2)`.
-    - It builds a new, mixed candidate vocabulary containing *both* unigrams
-      and bigrams from the training data.
-    - `GridSearchCV` again searches for the best `max_features`. However, in this
-      run, it selects the top N features from the *mixed* pool, where unigrams
-      and bigrams compete for inclusion based on their overall frequency/importance.
-
-Key Distinction:
-The core difference lies in how the final features are selected:
-
--   **Identical Candidate Pool for Unigrams:** Before hyperparameter tuning,
-    the pool of *all possible* unigram features is identical for both
-    the unigram-only and the unigram+bigram experiments because they both
-    process the same training data.
-
--   **Different Competitive Environments:**
-    - In the unigram-only experiment, unigrams only compete against other unigrams
-      for a spot in the final `max_features` set.
-    - In the unigram+bigram experiment, unigrams must compete against bigrams for
-      those same spots.
-
-As a result, the final set of unigram features chosen for the unigram+bigram model is
-not guaranteed to be the same as the set chosen for the unigram-only model. This
-design differs from a `FeatureUnion` approach, where a pre-selected unigram
-vocabulary is explicitly combined with a separately generated bigram vocabulary.
-"""
 #%%
 import os
 import logging
 import string
+import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.metrics import classification_report
 from sklearn.pipeline import Pipeline
+from scipy.stats import pointbiserialr
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
 #%%
 APPEND_LOG = True
-N_SPLITS_LIST = [3, 4, 5, 8, 10]
+# N_SPLITS_LIST = [3, 4, 5, 8, 10]
+N_SPLITS_LIST = [4]
 
 #%% Logging setup (same as multinomial NB)
 logger = logging.getLogger("my_logger")
@@ -155,24 +113,46 @@ def run_experiment(ngram_range, n_splits_list=[4], use_tfidf=False):
         logger.info(f"Test set results (fold 5):")
         logger.info(classification_report(y_test, y_pred, digits=4))
 
+        # --- Feature Importance and Correlation Analysis ---
         vect = best_model.named_steps['vect']
         clf = best_model.named_steps['clf']
         feature_names = np.array(vect.get_feature_names_out())
-        coefs = clf.coef_[0]
-        top_fake = feature_names[np.argsort(coefs)[-5:][::-1]]
-        top_genuine = feature_names[np.argsort(coefs)[:5]]
-        logger.info(f"Top 5 fake-indicative words: {top_fake}")
-        logger.info(f"Top 5 genuine-indicative words: {top_genuine}")
+
+        # Importance is the coefficient from the logistic regression model
+        importance = clf.coef_[0]
+
+        # Calculate correlation
+        X_train_vec = vect.transform(X_train)
+        X_train_binary = (X_train_vec > 0).astype(int)
+        correlations = [pointbiserialr(X_train_binary[:, i].toarray().ravel(), y_train)[0] for i in range(X_train_binary.shape[1])]
+        correlations = np.nan_to_num(correlations) # Replace NaN with 0 if a word never appears
+
+        # Create a DataFrame for analysis
+        df = pd.DataFrame({
+            'Feature': feature_names,
+            'Importance': importance,
+            'Correlation': correlations
+        })
+
+        # Get top 5 fake and genuine terms
+        df_sorted = df.sort_values(by='Importance', ascending=False)
+        top_fake_terms = df_sorted.head(5)
+        top_genuine_terms = df_sorted.tail(5).iloc[::-1] # tail gives smallest, reverse to get descending order of "genuineness"
+
+        logger.info("\n--- Top 5 Fake-indicative terms ---")
+        logger.info(top_fake_terms.to_string(index=False))
+        logger.info("\n--- Top 5 Genuine-indicative terms ---")
+        logger.info(top_genuine_terms.to_string(index=False))
 
 def main():
     logger.info("========== Unigram only (CountVectorizer) ==========")
     run_experiment((1,1), n_splits_list=N_SPLITS_LIST, use_tfidf=False)
     logger.info("========== Unigram + Bigram (CountVectorizer) ==========")
     run_experiment((1,2), n_splits_list=N_SPLITS_LIST, use_tfidf=False)
-    logger.info("========== Unigram only (TFIDF) ==========")
-    run_experiment((1,1), n_splits_list=N_SPLITS_LIST, use_tfidf=True)
-    logger.info("========== Unigram + Bigram (TFIDF) ==========")
-    run_experiment((1,2), n_splits_list=N_SPLITS_LIST, use_tfidf=True)
+    # logger.info("========== Unigram only (TFIDF) ==========")
+    # run_experiment((1,1), n_splits_list=N_SPLITS_LIST, use_tfidf=True)
+    # logger.info("========== Unigram + Bigram (TFIDF) ==========")
+    # run_experiment((1,2), n_splits_list=N_SPLITS_LIST, use_tfidf=True)
 
 #%%
 if __name__ == "__main__":

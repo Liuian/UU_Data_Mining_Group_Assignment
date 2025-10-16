@@ -1,57 +1,15 @@
 #%%
-"""
-This script implements and evaluates a Multinomial Naive Bayes classifier for
-deceptive opinion spam detection. It follows a two-stage experimental design
-to compare the performance of a model using only unigram features against a
-model using a combination of unigram and bigram features.
-
-Experimental Design:
-
-The `main` function orchestrates two independent experiments by calling the
-`run_experiment` function twice:
-
-1.  Unigram Only (`run_experiment((1,1), ...)`):
-    - A `CountVectorizer` is configured with `ngram_range=(1,1)`.
-    - It builds a candidate vocabulary consisting solely of unigrams (single words)
-      from the training data.
-    - `GridSearchCV` then searches for the best `max_features` by selecting the
-      top N most frequent unigrams from this candidate pool.
-
-2.  Unigram + Bigram (`run_experiment((1,2), ...)`):
-    - A new `CountVectorizer` is configured with `ngram_range=(1,2)`.
-    - It builds a new, mixed candidate vocabulary containing *both* unigrams
-      and bigrams from the training data.
-    - `GridSearchCV` again searches for the best `max_features`. However, in this
-      run, it selects the top N features from the *mixed* pool, where unigrams
-      and bigrams compete for inclusion based on their overall frequency.
-
-Key Distinction:
-The core difference lies in how the final features are selected:
-
--   **Identical Candidate Pool for Unigrams:** Before hyperparameter tuning,
-    the pool of *all possible* unigram features is identical for both
-    experiments because they both process the same training data.
-
--   **Different Competitive Environments:**
-    - In the first experiment, unigrams only compete against other unigrams
-      for a spot in the final `max_features` set.
-    - In the second experiment, unigrams must compete against bigrams for
-      those same spots.
-
-As a result, the final set of unigram features chosen for the second model is
-not guaranteed to be the same as the set chosen for the first model. This
-design differs from a `FeatureUnion` approach, where a pre-selected unigram
-vocabulary is explicitly combined with a separately generated bigram vocabulary.
-"""
 import os
 import logging
 import string
+import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.metrics import classification_report
 from sklearn.pipeline import Pipeline
+from scipy.stats import pointbiserialr
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -169,14 +127,37 @@ def run_experiment(ngram_range, n_splits_list=[4]):
         logger.info(f"Test set results (fold 5):")
         logger.info(classification_report(y_test, y_pred, digits=4))
 
+        # --- Feature Importance and Correlation Analysis ---
         vect = best_model.named_steps['vect']
         clf = best_model.named_steps['clf']
         feature_names = np.array(vect.get_feature_names_out())
-        log_prob = clf.feature_log_prob_
-        top_fake = feature_names[np.argsort(log_prob[1] - log_prob[0])[-5:][::-1]]
-        top_genuine = feature_names[np.argsort(log_prob[0] - log_prob[1])[-5:][::-1]]
-        logger.info(f"Top 5 fake-indicative words: {top_fake}")
-        logger.info(f"Top 5 genuine-indicative words: {top_genuine}")
+
+        # Calculate importance from log probabilities
+        # Importance for fake class: log_prob(word|fake) - log_prob(word|genuine)
+        importance = clf.feature_log_prob_[1] - clf.feature_log_prob_[0]
+
+        # Calculate correlation
+        X_train_vec = vect.transform(X_train)
+        X_train_binary = (X_train_vec > 0).astype(int)
+        correlations = [pointbiserialr(X_train_binary[:, i].toarray().ravel(), y_train)[0] for i in range(X_train_binary.shape[1])]
+        correlations = np.nan_to_num(correlations) # Replace NaN with 0 if a word never appears
+
+        # Create a DataFrame for analysis
+        df = pd.DataFrame({
+            'Feature': feature_names,
+            'Importance': importance,
+            'Correlation': correlations
+        })
+
+        # Get top 5 fake and genuine terms
+        df_sorted = df.sort_values(by='Importance', ascending=False)
+        top_fake_terms = df_sorted.head(5)
+        top_genuine_terms = df_sorted.tail(5).iloc[::-1] # tail gives smallest, reverse to get descending order of "genuineness"
+
+        logger.info("\n--- Top 5 Fake-indicative terms ---")
+        logger.info(top_fake_terms.to_string(index=False))
+        logger.info("\n--- Top 5 Genuine-indicative terms ---")
+        logger.info(top_genuine_terms.to_string(index=False))
 
 def main():
     logger.info("========== Unigram only ==========")
@@ -187,4 +168,4 @@ def main():
 #%%
 if __name__ == "__main__":
     main()
-    logger.info("=== End this run ===\n" + ("\n" * 5))
+    logger.info("==================== End this run ====================\n" + ("\n" * 5))
