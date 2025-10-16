@@ -8,12 +8,13 @@ if __name__ == "__main__":
 
     dataset_root = r"C:\Users\ankit\Desktop\Data Mining\Assignment\UU_Data_Mining_Group_Assignment\data\negative_polarity"
     folders = ["truthful_from_Web", "deceptive_from_MTurk"]
-    x, y, fold_id = load_data(dataset_root, folders)
+    x, y, fold_id, fname = load_data(dataset_root, folders)
     test_folder = "fold5"
     train_mask = fold_id != test_folder
 
     x_train, y_train = x[train_mask], y[train_mask]
     x_test, y_test = x[~train_mask], y[~train_mask]
+    fnames_train, fnames_test = fname[train_mask], fname[~train_mask]
     
     sys.stdout = open("reports/output.txt", "w", encoding="utf-8")
     print(f"Train set size: {len(x_train)} | Test set size: {len(x_test)}")
@@ -23,7 +24,7 @@ if __name__ == "__main__":
 
     print("\nDone. Training complete. Models to models")
 
-    evaluate_models(uni_model, bi_model, x_test, y_test, labels, out_dir="reports")
+    evaluate_models(uni_model, bi_model, x_test, y_test,fnames_test, labels, out_dir="reports")
     print("\nDone. Evaluation complete. Confusion matrices saved to reports")
 
     get_features(uni_model, x_train, y_train, k=5)

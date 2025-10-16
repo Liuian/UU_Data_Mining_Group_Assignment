@@ -1,12 +1,25 @@
 import glob as glob
+import pandas as pd
 import os
+import hashlib
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.metrics import ConfusionMatrixDisplay
 
 
+def save_unigram_predictions(fnames_test, y_test, y_pred_uni, out_dir="reports"):
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+    df = pd.DataFrame({
+        "id": fnames_test,
+        "true_label": y_test,
+        "pred_decision_tree": y_pred_uni
+    })
+    csv_path = os.path.join(out_dir, "preds.csv")
+    df.to_csv(csv_path, index=False)
+    print(f"\nSaved unigram predictions to: {csv_path}")
 
-def evaluate_models(uni_model, bi_model, x_test, y_test, labels, out_dir ="reports"):
+def evaluate_models(uni_model, bi_model, x_test, y_test,fnames_test, labels, out_dir ="reports"):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     y_pred_uni = uni_model.best_estimator_.predict(x_test)
@@ -14,6 +27,7 @@ def evaluate_models(uni_model, bi_model, x_test, y_test, labels, out_dir ="repor
     print("Best params:", uni_model.best_params_)
     print("Unigram accuracy:", accuracy_score(y_test, y_pred_uni))
     print(classification_report(y_test, y_pred_uni, target_names=labels))
+    save_unigram_predictions(fnames_test,y_test, y_pred_uni, out_dir)
     uni_cm = confusion_matrix(y_test, y_pred_uni)
 
     ConfusionMatrixDisplay(uni_cm, display_labels=labels).plot(cmap='viridis', colorbar=True)
