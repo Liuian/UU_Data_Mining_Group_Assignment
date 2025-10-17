@@ -76,7 +76,7 @@ data/
 5. Run
    
    python main.py --dataset_root "your_path/negative_polarity"    #"your_path/negative_polarity" replace this with your path to negative_polarity dataset
-`
+**The code prints and stores all output in reports/output.txt**
 
 ## 4. Gradient Boosting
 
