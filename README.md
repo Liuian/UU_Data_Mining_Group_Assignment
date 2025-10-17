@@ -83,7 +83,13 @@ data/
 
 (b) Which script(s) produce the key results in your report (e.g., The performance measures reported in Table 2 are produced by train_model.py).
 
+---
+```
+
 ## 4. Gradient Boosting
+
+
+
 This project implements a Gradient Boosting to classify text data. It performs hyperparameter tuning using GridSearchCV and evaluates the model on a test set.
 Requirements
 
