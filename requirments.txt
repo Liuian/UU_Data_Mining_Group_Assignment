@@ -7,3 +7,12 @@ scikit-learn==1.7.1
 scipy==1.16.1
 threadpoolctl==3.6.0
 tqdm==4.67.1
+numpy
+pandas
+scikit-learn>=1.2
+scipy
+matplotlib
+jupyterlab
+notebook
+ipywidgets
+nbconvert
