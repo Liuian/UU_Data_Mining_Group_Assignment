@@ -76,15 +76,7 @@ data/
 5. Run
    
    python main.py --dataset_root "your_path/negative_polarity"    #"your_path/negative_polarity" replace this with your path to negative_polarity dataset
-
----
-
-(a) How to run your code (e.g., python main.py).  
-
-(b) Which script(s) produce the key results in your report (e.g., The performance measures reported in Table 2 are produced by train_model.py).
-
----
-```
+`
 
 ## 4. Gradient Boosting
 
