@@ -84,6 +84,7 @@ data/
 ```
 
 This project implements a Gradient Boosting to classify text data. It performs hyperparameter tuning using GridSearchCV and evaluates the model on a test set.
+```
 Requirements
 
 You can install the necessary Python libraries using pip. It is recommended to use a virtual environment.
