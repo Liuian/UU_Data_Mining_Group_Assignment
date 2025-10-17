@@ -82,7 +82,8 @@ data/
 (a) How to run your code (e.g., python main.py).  
 
 (b) Which script(s) produce the key results in your report (e.g., The performance measures reported in Table 2 are produced by train_model.py).
-Gradient Boosting
+
+## 4. Gradient Boosting
 This project implements a Gradient Boosting to classify text data. It performs hyperparameter tuning using GridSearchCV and evaluates the model on a test set.
 Requirements
 
@@ -159,11 +160,8 @@ conda activate gb_spam
 pip install -r requirements.txt
 ```
 
-(c) Which external libraries/packages are needed to run your code.  
 
-- Google doc: https://docs.google.com/document/d/1hGF0I7-lEoWSRKTuZkL3C70D-jN3i2rHk9jisJgUOv0/edit?pli=1&tab=t.0#heading=h.140bs3o8so5n
-
-Random Forest
+## 5.Random Forest
 This project implements Random Forest to classify text data. It performs hyperparameter tuning using GridSearchCV and evaluates the model on a test set. Requirements
 
 You can install the necessary Python libraries using pip. It is recommended to use a virtual environment.
