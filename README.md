@@ -47,7 +47,7 @@ python main_1.py
 - **Predictions**: The test set predictions will be saved as CSV files inside the `uu_data_mining_group_assignment/reports/` directory (e.g., `uu_data_mining_group_assignment/reports/logistic_regression_unigram_count.csv`).
 
 
-## Single Classification Trees
+## 3. Single Classification Trees
 ### How to Run
 1. Have Python installed
 2. Download the dataset
@@ -72,7 +72,7 @@ data/
 
 4. Run
    
-   python -m pip install -r requirements.txt           #downloads all dependencies
+   python -m pip install -r requirements.txt           #use the requirements file under Single Classification trees 
 5. Run
    
    python main.py --dataset_root "your_path/negative_polarity"    #"your_path/negative_polarity" replace this with your path to negative_polarity dataset
