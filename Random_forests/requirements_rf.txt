@@ -1,0 +1,9 @@
+numpy
+pandas
+scikit-learn>=1.2
+scipy
+matplotlib
+jupyterlab
+notebook
+ipywidgets
+nbconvert
