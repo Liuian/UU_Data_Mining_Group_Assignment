@@ -53,7 +53,8 @@ python main_1.py
 2. Download the dataset
    Have you data like this:
    
-   data/
+```text
+data/
 └── negative_polarity/
     ├── truthful_from_Web/
     │   ├── fold1/
