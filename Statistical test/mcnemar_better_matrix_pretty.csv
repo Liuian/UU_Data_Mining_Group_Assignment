@@ -1,0 +1,6 @@
+﻿,predicted_naive_bayes_unigram,predicted_logistic_regression_unigram,pred_gb,pred_rf,pred_decision_tree
+predicted_naive_bayes_unigram,—,·,·,·,✓
+predicted_logistic_regression_unigram,·,—,·,·,✓
+pred_gb,·,·,—,·,✓
+pred_rf,·,·,·,—,✓
+pred_decision_tree,✗,✗,✗,✗,—
