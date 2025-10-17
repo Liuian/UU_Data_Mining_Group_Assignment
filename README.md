@@ -50,8 +50,27 @@ python main_1.py
 ## Single Classification Trees
 ### How to Run
 1. Have Python installed
-2. Download the dataset 
-3. Run
+2. Download the dataset
+   Have you data like this:
+   data/
+└── negative_polarity/
+    ├── truthful_from_Web/
+    │   ├── fold1/
+    │   │   ├── 1.txt
+    │   │   ├── 2.txt
+    │   │   └── ...
+    │   ├── fold2/
+    │   ├── fold3/
+    │   ├── fold4/
+    │   └── fold5/
+    └── deceptive_from_MTurk/
+        ├── fold1/
+        ├── fold2/
+        ├── fold3/
+        ├── fold4/
+        └── fold5/
+
+4. Run
    
    python -m pip install -r requirements.txt           #downloads all dependencies
 5. Run
