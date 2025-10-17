@@ -52,7 +52,7 @@ python main_1.py
 1. Have Python installed
 2. Download the dataset
    Have you data like this:
-  data/
+data/
 └── negative_polarity/
     ├── truthful_from_Web/
     │   ├── fold1/
@@ -66,6 +66,7 @@ python main_1.py
         ├── fold3/
         ├── fold4/
         └── fold5/
+
 
 
 4. Run
