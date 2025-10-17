@@ -80,7 +80,7 @@ data/
 
 ## 4. Gradient Boosting
 
-
+```
 
 This project implements a Gradient Boosting to classify text data. It performs hyperparameter tuning using GridSearchCV and evaluates the model on a test set.
 Requirements
