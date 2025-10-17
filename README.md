@@ -78,8 +78,9 @@ data/
    python main.py --dataset_root "your_path/negative_polarity"    #"your_path/negative_polarity" replace this with your path to negative_polarity dataset
 **The code prints and stores all output in reports/output.txt**
 
+```
 ## 4. Gradient Boosting
-
+```
 ```
 
 This project implements a Gradient Boosting to classify text data. It performs hyperparameter tuning using GridSearchCV and evaluates the model on a test set.
